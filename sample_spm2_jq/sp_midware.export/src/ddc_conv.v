@@ -127,7 +127,7 @@ mult_signed
 u0_mult_signed(
     .CLK                        (clk_25d6m                  ),      // input wire CLK
     .A                          (midband_idata              ),      // input wire [15 : 0] A
-    .B                          (lo_sin                     ),      // input wire [15 : 0] B
+    .B                          (lo_cos                     ),      // input wire [15 : 0] B
     .P                          (mult_idata                  )       // output wire [31 : 0] P
 );
 
@@ -135,7 +135,7 @@ mult_signed
 u1_mult_signed(
     .CLK                        (clk_25d6m                  ),      // input wire CLK
     .A                          (midband_qdata              ),      // input wire [15 : 0] A
-    .B                          (lo_cos                     ),      // input wire [15 : 0] B
+    .B                          (lo_sin                     ),      // input wire [15 : 0] B
     .P                          (mult_qdata                 )       // output wire [31 : 0] P
 );
 

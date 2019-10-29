@@ -356,7 +356,6 @@
     <FileSet Name="cic_compiler_160r" Type="BlockSrcs" RelSrcDir="$PSRCDIR/cic_compiler_160r">
       <File Path="$PSRCDIR/sources_1/ip/cic_compiler_160r/cic_compiler_160r.xci">
         <FileInfo>
-          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
