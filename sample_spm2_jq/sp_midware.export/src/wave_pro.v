@@ -38,14 +38,23 @@ output  wire    [31:0]              axi4_lite_rdata,
 output  wire    [1:0]               axi4_lite_rresp,
 
 input                               axis_clk,
-output  wire                        axis_rx_tready,
-input                               axis_rx_tvalid,
-input           [31:0]              axis_rx_tdata,
-input                               axis_rx_tlast,
-output  wire                        axis_tx_tvalid,
-output  wire    [31:0]              axis_tx_tdata,
-input                               axis_tx_tready,
-output  wire                        axis_tx_tlast
+output  wire                        axis_0_rx_tready,
+input                               axis_0_rx_tvalid,
+input           [31:0]              axis_0_rx_tdata,
+input                               axis_0_rx_tlast,
+output  wire                        axis_1_rx_tready,
+input                               axis_1_rx_tvalid,
+input           [31:0]              axis_1_rx_tdata,
+input                               axis_1_rx_tlast,
+output  wire                        axis_0_tx_tvalid,
+output  wire    [31:0]              axis_0_tx_tdata,
+input                               axis_0_tx_tready,
+output  wire                        axis_0_tx_tlast,
+output  wire                        axis_1_tx_tvalid,
+output  wire    [31:0]              axis_1_tx_tdata,
+input                               axis_1_tx_tready,
+output  wire                        axis_1_tx_tlast,
+output  wire                        led_pulse
 );
 // Parameter Define
 
@@ -138,14 +147,23 @@ u_conv_top(
     .lbs_re                     (lbs_re                     ),
 
     .axis_clk                   (axis_clk                   ),
-    .axis_rx_tready             (axis_rx_tready             ),
-    .axis_rx_tvalid             (axis_rx_tvalid             ),
-    .axis_rx_tdata              (axis_rx_tdata              ),
-    .axis_rx_tlast              (axis_rx_tlast              ),
-    .axis_tx_tvalid             (axis_tx_tvalid             ),
-    .axis_tx_tdata              (axis_tx_tdata              ),
-    .axis_tx_tready             (axis_tx_tready             ),
-    .axis_tx_tlast              (axis_tx_tlast              )
+    .axis_0_rx_tready           (axis_0_rx_tready           ),
+    .axis_0_rx_tvalid           (axis_0_rx_tvalid           ),
+    .axis_0_rx_tdata            (axis_0_rx_tdata            ),
+    .axis_0_rx_tlast            (axis_0_rx_tlast            ),
+    .axis_1_rx_tready           (axis_1_rx_tready           ),
+    .axis_1_rx_tvalid           (axis_1_rx_tvalid           ),
+    .axis_1_rx_tdata            (axis_1_rx_tdata            ),
+    .axis_1_rx_tlast            (axis_1_rx_tlast            ),
+    .axis_0_tx_tvalid           (axis_0_tx_tvalid           ),
+    .axis_0_tx_tdata            (axis_0_tx_tdata            ),
+    .axis_0_tx_tready           (axis_0_tx_tready           ),
+    .axis_0_tx_tlast            (axis_0_tx_tlast            ),
+    .axis_1_tx_tvalid           (axis_1_tx_tvalid           ),
+    .axis_1_tx_tdata            (axis_1_tx_tdata            ),
+    .axis_1_tx_tready           (axis_1_tx_tready           ),
+    .axis_1_tx_tlast            (axis_1_tx_tlast            ),
+    .led_pulse                  (led_pulse                  )
 );
 
 endmodule

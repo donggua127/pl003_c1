@@ -27,18 +27,26 @@ input                               clk_25d6m,
 input           [15:0]              lo_sin,
 input           [15:0]              lo_cos,
 input                               axis_clk,
+(* MARK_DEBUG="true" *)
 output  wire                        duc_tvalid,
+(* MARK_DEBUG="true" *)
 output  reg                         duc_tlast,
+(* MARK_DEBUG="true" *)
 output  wire    [31:0]              duc_tdata,
+(* MARK_DEBUG="true" *)
 input                               duc_tready,
 output  wire    [31:0]              duc_base_data,
 output  wire    [31:0]              duc_cmd_register
 );
 // Parameter Define
+localparam                          SAMPLE_RATE_SEL = 0;    //0:160k, 1:96k
 localparam                          FW_CLKEN_160K = 32'd26843546;
 localparam                          FW_CLKEN_96K = 32'd16106127;
+localparam                          FW_CLKEN = (SAMPLE_RATE_SEL) ? FW_CLKEN_96K : FW_CLKEN_160K;
 localparam                          START_ADDR = 14'd12000;
-localparam                          MAX_ADDR = 14'd14304;
+localparam                          MAX_ADDR_160K = 14'd15839;
+localparam                          MAX_ADDR_96K = 14'd14303;
+localparam                          MAX_ADDR = (SAMPLE_RATE_SEL) ? MAX_ADDR_96K : MAX_ADDR_160K;
 localparam                          DUC_LENGTH = MAX_ADDR - START_ADDR;
 localparam                          CMD_ADDR = 14'd16000;
 localparam                          CMD_DOWN_START = 32'h0000_5555;
@@ -47,8 +55,6 @@ localparam                          CMD_DOWN_TRIG = 32'h0000_FFFF;
 
 // Register Define
 reg     [7:0]                       tcnt;
-reg     [15:0]                      ram_idata;
-reg     [15:0]                      ram_qdata;
 (* MARK_DEBUG="true" *)
 reg                                 down_start;
 (* MARK_DEBUG="true" *)
@@ -66,12 +72,14 @@ reg                                 send_flag;
 reg                                 send_flag_dly;
 reg                                 send_end;
 (* MARK_DEBUG="true" *)
+reg     [15:0]                      baseband_idata;
 reg                                 ram_wen;
 reg     [13:0]                      ram_waddr;
 reg     [31:0]                      ram_din;
 reg     [31:0]                      cmd_register;
 reg                                 down_trig;
 (* MARK_DEBUG="true" *)
+reg     [15:0]                      baseband_qdata;
 reg     [4:0]                       ofifo_wen_cnt;
 reg                                 ofifo_wen_enb;
 (* MARK_DEBUG="true" *)
@@ -91,9 +99,6 @@ wire                                ofifo_wen;
 wire                                ofifo_ren;
 wire                                ofifo_empty;
 wire                                ofifo_full;
-wire    [31:0]                      baseband_idata;
-wire    [31:0]                      baseband_qdata;
-wire                                send_ready;
 
 assign duc_cmd_register = cmd_register;
 
@@ -188,14 +193,14 @@ u_ram(
     .web                        (1'b0                       )       // input wire [0 : 0] wea
 );
 
-`ifdef NO_FILTER
+
 dds_clken #(
     .U_DLY                      (U_DLY                      )
 )
 u_dds_clken(
     .clk                        (clk_25d6m                  ),
     .rst_n                      (rst_n                      ),
-    .fw                         (FW_CLKEN_96K               ),
+    .fw                         (FW_CLKEN                    ),
     .enb                        (clk_enb                    )
 );
 
@@ -244,96 +249,21 @@ begin
             if(send_flag == 1'b1)
                 baseband_idata <= #U_DLY ram_dout[31:16];
             else
-                baseband_idata <= #U_DLY 16'd0;
+                baseband_idata <= #U_DLY 16'd3000;
+                //baseband_idata <= #U_DLY 16'h7fff;
 
             if(send_flag == 1'b1)
                 baseband_qdata <= #U_DLY ram_dout[15:0];
             else
-                baseband_qdata <= #U_DLY 16'd0;
-
-
+                baseband_qdata <= #U_DLY 16'd3000;
+                //baseband_qdata <= #U_DLY 16'h7fff;
         end
 end
-`else
-always @ (posedge clk_25d6m or negedge rst_n )
-begin
-    if (rst_n == 1'b0)
-        begin
-            start_send_sync <= 3'd0;
-            ram_raddr <= 12'd0;
-            send_flag <= 1'b0;
-            send_flag_dly <= 1'b0;
-            send_end <= 1'b0;
-            ram_idata <= 16'd0;
-            ram_qdata <= 16'd0;
-        end
-    else
-        begin
-            start_send_sync <= #U_DLY {start_send_sync[1:0],start_send};
-
-            if((start_send_sync[2] ^ start_send_sync[1]) == 1'b1)
-                send_flag <= #U_DLY 1'b1;
-            else if(send_ready == 1'b1 && send_flag == 1'b1 && ram_raddr >= DUC_LENGTH)
-                send_flag <= #U_DLY 1'b0;
-            else;
-
-            send_flag_dly <= #U_DLY send_flag;
-
-            if({send_flag_dly,send_flag} == 2'b10)
-                send_end <= #U_DLY ~send_end;
-            else;
-
-
-            if(send_flag == 1'b1 && send_ready == 1'b1)
-                begin
-                    if(ram_raddr < DUC_LENGTH)
-                        ram_raddr <= #U_DLY ram_raddr + 12'd1;
-                    else
-                        ram_raddr <= #U_DLY 12'd0;
-                end
-            else if(send_flag == 1'b0)
-                ram_raddr <= #U_DLY 12'd0;
-            else;
-
-
-            if(send_flag == 1'b1)
-                ram_idata <= #U_DLY ram_dout[31:16];
-            else
-                ram_idata <= #U_DLY 16'd0;
-
-            if(send_flag == 1'b1)
-                ram_qdata <= #U_DLY ram_dout[15:0];
-            else
-                ram_qdata <= #U_DLY 16'd0;
-        end
-end
-cic_compiler_160r
-u0_cic_compiler(
-    .aclk                       (clk_25d6m                  ),                              // input wire aclk
-    .s_axis_data_tdata          (ram_idata                  ),    // input wire [15 : 0] s_axis_data_tdata
-    .s_axis_data_tvalid         (send_flag                  ),  // input wire s_axis_data_tvalid
-    .s_axis_data_tready         (send_ready                 ),  // output wire s_axis_data_tready
-    .m_axis_data_tdata          (baseband_idata            ),    // output wire [31 : 0] m_axis_data_tdata
-    .m_axis_data_tvalid         (baseband_valid             )    // output wire m_axis_data_tvalid
-);
-
-cic_compiler_160r
-u1_cic_compiler(
-    .aclk                       (clk_25d6m                  ),                              // input wire aclk
-    .s_axis_data_tdata          (ram_qdata                  ),    // input wire [15 : 0] s_axis_data_tdata
-    .s_axis_data_tvalid         (send_flag                  ),  // input wire s_axis_data_tvalid
-    .s_axis_data_tready         (send_ready                 ),  // output wire s_axis_data_tready
-    .m_axis_data_tdata          (baseband_qdata            ),    // output wire [31 : 0] m_axis_data_tdata
-    .m_axis_data_tvalid         (/*not used*/               )    // output wire m_axis_data_tvalid
-);
-
-`endif
-
 
 mult_signed
 u0_mult_signed(
     .CLK                        (clk_25d6m                  ),      // input wire CLK
-    .A                          (baseband_idata[31:15]      ),      // input wire [15 : 0] A
+    .A                          (baseband_idata             ),      // input wire [15 : 0] A
     .B                          (lo_sin                     ),      // input wire [15 : 0] B
     .P                          (duc_idata                  )       // output wire [31 : 0] P
 );
@@ -341,7 +271,7 @@ u0_mult_signed(
 mult_signed
 u1_mult_signed(
     .CLK                        (clk_25d6m                  ),      // input wire CLK
-    .A                          (baseband_qdata[31:15]      ),      // input wire [15 : 0] A
+    .A                          (baseband_qdata             ),      // input wire [15 : 0] A
     .B                          (lo_cos                     ),      // input wire [15 : 0] B
     .P                          (duc_qdata                  )       // output wire [31 : 0] P
 );

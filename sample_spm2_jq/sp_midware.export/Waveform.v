@@ -124,6 +124,7 @@ module Waveform(
     // LRM Discrete signals (Shared)
     input   wire [6:0]  lrm_sig_in              ,
     output  wire [24:0] lrm_sig_out             ,
+    output  wire        led_pulse,
     // Interrupt
     output  wire [7:0]  intr_out
 );
@@ -162,16 +163,26 @@ u_wave_pro(
     .axi4_lite_rresp            (s_axi_lite_0_rresp_out     ),
 
     .axis_clk                   (axis_zif_clk_in            ),
-    .axis_rx_tready             (/*not used*/               ),
-    .axis_rx_tvalid             (axis_0_rx_tvalid_in        ),
-    .axis_rx_tdata              (axis_0_rx_tdata_in         ),
-    .axis_rx_tlast              (axis_0_rx_tlast_in         ),
-    .axis_tx_tvalid             (axis_0_tx_tvalid_out       ),
-    .axis_tx_tdata              (axis_0_tx_tdata_out        ),
-    .axis_tx_tready             (axis_0_tx_tready_in        ),
-    .axis_tx_tlast              (axis_0_tx_tlast_out        )
+    .axis_0_rx_tready           (/*not used*/               ),
+    .axis_0_rx_tvalid           (axis_0_rx_tvalid_in        ),
+    .axis_0_rx_tdata            (axis_0_rx_tdata_in         ),
+    .axis_0_rx_tlast            (axis_0_rx_tlast_in         ),
+    .axis_1_rx_tready           (/*not used*/               ),
+    .axis_1_rx_tvalid           (axis_1_rx_tvalid_in        ),
+    .axis_1_rx_tdata            (axis_1_rx_tdata_in         ),
+    .axis_1_rx_tlast            (axis_1_rx_tlast_in         ),
+    .axis_0_tx_tvalid           (axis_0_tx_tvalid_out       ),
+    .axis_0_tx_tdata            (axis_0_tx_tdata_out        ),
+    .axis_0_tx_tready           (axis_0_tx_tready_in        ),
+    .axis_0_tx_tlast            (axis_0_tx_tlast_out        ),
+    .axis_1_tx_tvalid           (axis_1_tx_tvalid_out       ),
+    .axis_1_tx_tdata            (axis_1_tx_tdata_out        ),
+    .axis_1_tx_tready           (axis_1_tx_tready_in        ),
+    .axis_1_tx_tlast            (axis_1_tx_tlast_out        ),
+    .led_pulse                  (led_pulse                  )
 );
 assign axis_0_tx_tkeep_out = 4'hf;
+assign axis_1_tx_tkeep_out = 4'hf;
 
 
 //======================================+=======================================
