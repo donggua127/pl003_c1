@@ -1,8 +1,8 @@
 //Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-//Date        : Mon Sep  2 16:38:33 2019
-//Host        : txlx007 running 64-bit Service Pack 1  (build 7601)
+//Date        : Mon Oct 14 15:49:38 2019
+//Host        : TXLX582 running 64-bit Service Pack 1  (build 7601)
 //Command     : generate_target bus_architecture_wrapper.bd
 //Design      : bus_architecture_wrapper
 //Purpose     : IP block netlist
@@ -139,6 +139,11 @@ module bus_architecture_wrapper
     wf_data_axis_1_rx_tlast,
     wf_data_axis_1_rx_tready,
     wf_data_axis_1_rx_tvalid,
+    wf_data_axis_1_tx_tdata,
+    wf_data_axis_1_tx_tkeep,
+    wf_data_axis_1_tx_tlast,
+    wf_data_axis_1_tx_tready,
+    wf_data_axis_1_tx_tvalid,
     wf_data_user_clk,
     wf_intr_in,
     wf_m_axi_lite_0_araddr,
@@ -308,6 +313,11 @@ module bus_architecture_wrapper
   output [0:0]wf_data_axis_1_rx_tlast;
   input [0:0]wf_data_axis_1_rx_tready;
   output [0:0]wf_data_axis_1_rx_tvalid;
+  input [31:0]wf_data_axis_1_tx_tdata;
+  input [3:0]wf_data_axis_1_tx_tkeep;
+  input [0:0]wf_data_axis_1_tx_tlast;
+  output [0:0]wf_data_axis_1_tx_tready;
+  input [0:0]wf_data_axis_1_tx_tvalid;
   output wf_data_user_clk;
   input [7:0]wf_intr_in;
   output [31:0]wf_m_axi_lite_0_araddr;
@@ -541,6 +551,11 @@ module bus_architecture_wrapper
   wire [0:0]wf_data_axis_1_rx_tlast;
   wire [0:0]wf_data_axis_1_rx_tready;
   wire [0:0]wf_data_axis_1_rx_tvalid;
+  wire [31:0]wf_data_axis_1_tx_tdata;
+  wire [3:0]wf_data_axis_1_tx_tkeep;
+  wire [0:0]wf_data_axis_1_tx_tlast;
+  wire [0:0]wf_data_axis_1_tx_tready;
+  wire [0:0]wf_data_axis_1_tx_tvalid;
   wire wf_data_user_clk;
   wire [7:0]wf_intr_in;
   wire [31:0]wf_m_axi_lite_0_araddr;
@@ -714,6 +729,11 @@ module bus_architecture_wrapper
         .wf_data_axis_1_rx_tlast(wf_data_axis_1_rx_tlast),
         .wf_data_axis_1_rx_tready(wf_data_axis_1_rx_tready),
         .wf_data_axis_1_rx_tvalid(wf_data_axis_1_rx_tvalid),
+        .wf_data_axis_1_tx_tdata(wf_data_axis_1_tx_tdata),
+        .wf_data_axis_1_tx_tkeep(wf_data_axis_1_tx_tkeep),
+        .wf_data_axis_1_tx_tlast(wf_data_axis_1_tx_tlast),
+        .wf_data_axis_1_tx_tready(wf_data_axis_1_tx_tready),
+        .wf_data_axis_1_tx_tvalid(wf_data_axis_1_tx_tvalid),
         .wf_data_user_clk(wf_data_user_clk),
         .wf_intr_in(wf_intr_in),
         .wf_m_axi_lite_0_araddr(wf_m_axi_lite_0_araddr),

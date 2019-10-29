@@ -20,8 +20,11 @@ parameter                           U_DLY = 1
 )(
 input                               rst_n,
 input                               axis_clk,
+(* MARK_DEBUG="true" *)
 output  wire                        axis_tready,
+(* MARK_DEBUG="true" *)
 input                               axis_tvalid,
+(* MARK_DEBUG="true" *)
 input           [31:0]              axis_tdata,
 input                               axis_tlast,
 input                               clk_25d6m,
@@ -47,9 +50,10 @@ reg     [13:0]                      ram_waddr_sync0;
 reg     [13:0]                      ram_waddr_sync1;
 reg     [4:0]                       ram_wen_flag;
 reg                                 ram_wen_sw;
+reg     [4:0]                       ififo_wen_cnt;
 (* MARK_DEBUG="true" *)
 reg     [13:0]                      ram_waddr;
-reg     [4:0]                       ififo_wen_enb;
+reg                                 ififo_wen_enb;
 reg     [31:0]                      mult_idata_cut;
 reg     [31:0]                      mult_qdata_cut;
 (* MARK_DEBUG="true" *)
@@ -76,16 +80,28 @@ wire    [47:0]                      ddc_fir_qdata;
 (* MARK_DEBUG="true" *)
 wire                                ram_wen;
 
-assign ififo_wen = axis_tvalid & ififo_wen_enb[4];
+assign ififo_wen = axis_tvalid & ififo_wen_enb & axis_tready;
 assign ififo_din = axis_tdata;
 assign axis_tready = ~ififo_full;
 
 always @ (posedge axis_clk or negedge rst_n )
 begin
     if (rst_n == 1'b0)
-        ififo_wen_enb <= 5'b0;
+        begin
+            ififo_wen_cnt <= 5'd0;
+            ififo_wen_enb <= 1'b0;
+        end
     else
-        ififo_wen_enb <= #U_DLY {ififo_wen_enb[3:0],1'b1};
+        begin
+            if(ififo_wen_cnt < 5'h1f)
+                ififo_wen_cnt <= #U_DLY ififo_wen_cnt + 5'd1;
+            else;
+
+            if(ififo_wen_cnt == 5'h1f)
+                ififo_wen_enb <= #U_DLY 1'b1;
+            else
+                ififo_wen_enb <= #U_DLY 1'b0;
+        end
 end
 
 fwft_d2kw32

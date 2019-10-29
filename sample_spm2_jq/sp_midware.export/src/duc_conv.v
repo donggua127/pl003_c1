@@ -28,7 +28,7 @@ input           [15:0]              lo_sin,
 input           [15:0]              lo_cos,
 input                               axis_clk,
 output  wire                        duc_tvalid,
-output  wire                        duc_tlast,
+output  reg                         duc_tlast,
 output  wire    [31:0]              duc_tdata,
 input                               duc_tready,
 output  wire    [31:0]              duc_base_data,
@@ -39,12 +39,16 @@ localparam                          FW_CLKEN_160K = 32'd26843546;
 localparam                          FW_CLKEN_96K = 32'd16106127;
 localparam                          START_ADDR = 14'd12000;
 localparam                          MAX_ADDR = 14'd14304;
+localparam                          DUC_LENGTH = MAX_ADDR - START_ADDR;
 localparam                          CMD_ADDR = 14'd16000;
 localparam                          CMD_DOWN_START = 32'h0000_5555;
 localparam                          CMD_DOWN_END = 32'h0000_8888;
 localparam                          CMD_DOWN_TRIG = 32'h0000_FFFF;
 
 // Register Define
+reg     [7:0]                       tcnt;
+reg     [15:0]                      ram_idata;
+reg     [15:0]                      ram_qdata;
 (* MARK_DEBUG="true" *)
 reg                                 down_start;
 (* MARK_DEBUG="true" *)
@@ -62,14 +66,12 @@ reg                                 send_flag;
 reg                                 send_flag_dly;
 reg                                 send_end;
 (* MARK_DEBUG="true" *)
-reg     [15:0]                      baseband_idata;
 reg                                 ram_wen;
-reg     [11:0]                      ram_waddr;
+reg     [13:0]                      ram_waddr;
 reg     [31:0]                      ram_din;
 reg     [31:0]                      cmd_register;
 reg                                 down_trig;
 (* MARK_DEBUG="true" *)
-reg     [15:0]                      baseband_qdata;
 reg     [4:0]                       ofifo_wen_cnt;
 reg                                 ofifo_wen_enb;
 (* MARK_DEBUG="true" *)
@@ -89,6 +91,9 @@ wire                                ofifo_wen;
 wire                                ofifo_ren;
 wire                                ofifo_empty;
 wire                                ofifo_full;
+wire    [31:0]                      baseband_idata;
+wire    [31:0]                      baseband_qdata;
+wire                                send_ready;
 
 assign duc_cmd_register = cmd_register;
 
@@ -154,7 +159,7 @@ begin
     if (rst_n == 1'b0)
         begin
             ram_wen <= 1'b0;
-            ram_waddr <= 12'd0;
+            ram_waddr <= 14'd0;
             ram_din <= 32'd0;
         end
     else
@@ -183,7 +188,7 @@ u_ram(
     .web                        (1'b0                       )       // input wire [0 : 0] wea
 );
 
-
+`ifdef NO_FILTER
 dds_clken #(
     .U_DLY                      (U_DLY                      )
 )
@@ -212,7 +217,7 @@ begin
 
             if((start_send_sync[2] ^ start_send_sync[1]) == 1'b1)
                 send_flag <= #U_DLY 1'b1;
-            else if(clk_enb == 1'b1 && send_flag == 1'b1 && ram_raddr >= MAX_ADDR)
+            else if(clk_enb == 1'b1 && send_flag == 1'b1 && ram_raddr >= DUC_LENGTH)
                 send_flag <= #U_DLY 1'b0;
             else;
 
@@ -226,7 +231,7 @@ begin
                 begin
                     if(send_flag == 1'b1)
                         begin
-                            if(ram_raddr < MAX_ADDR)
+                            if(ram_raddr < DUC_LENGTH)
                                 ram_raddr <= #U_DLY ram_raddr + 12'd1;
                             else
                                 ram_raddr <= #U_DLY 12'd0;
@@ -245,13 +250,90 @@ begin
                 baseband_qdata <= #U_DLY ram_dout[15:0];
             else
                 baseband_qdata <= #U_DLY 16'd0;
+
+
         end
 end
+`else
+always @ (posedge clk_25d6m or negedge rst_n )
+begin
+    if (rst_n == 1'b0)
+        begin
+            start_send_sync <= 3'd0;
+            ram_raddr <= 12'd0;
+            send_flag <= 1'b0;
+            send_flag_dly <= 1'b0;
+            send_end <= 1'b0;
+            ram_idata <= 16'd0;
+            ram_qdata <= 16'd0;
+        end
+    else
+        begin
+            start_send_sync <= #U_DLY {start_send_sync[1:0],start_send};
+
+            if((start_send_sync[2] ^ start_send_sync[1]) == 1'b1)
+                send_flag <= #U_DLY 1'b1;
+            else if(send_ready == 1'b1 && send_flag == 1'b1 && ram_raddr >= DUC_LENGTH)
+                send_flag <= #U_DLY 1'b0;
+            else;
+
+            send_flag_dly <= #U_DLY send_flag;
+
+            if({send_flag_dly,send_flag} == 2'b10)
+                send_end <= #U_DLY ~send_end;
+            else;
+
+
+            if(send_flag == 1'b1 && send_ready == 1'b1)
+                begin
+                    if(ram_raddr < DUC_LENGTH)
+                        ram_raddr <= #U_DLY ram_raddr + 12'd1;
+                    else
+                        ram_raddr <= #U_DLY 12'd0;
+                end
+            else if(send_flag == 1'b0)
+                ram_raddr <= #U_DLY 12'd0;
+            else;
+
+
+            if(send_flag == 1'b1)
+                ram_idata <= #U_DLY ram_dout[31:16];
+            else
+                ram_idata <= #U_DLY 16'd0;
+
+            if(send_flag == 1'b1)
+                ram_qdata <= #U_DLY ram_dout[15:0];
+            else
+                ram_qdata <= #U_DLY 16'd0;
+        end
+end
+cic_compiler_160r
+u0_cic_compiler(
+    .aclk                       (clk_25d6m                  ),                              // input wire aclk
+    .s_axis_data_tdata          (ram_idata                  ),    // input wire [15 : 0] s_axis_data_tdata
+    .s_axis_data_tvalid         (send_flag                  ),  // input wire s_axis_data_tvalid
+    .s_axis_data_tready         (send_ready                 ),  // output wire s_axis_data_tready
+    .m_axis_data_tdata          (baseband_idata            ),    // output wire [31 : 0] m_axis_data_tdata
+    .m_axis_data_tvalid         (baseband_valid             )    // output wire m_axis_data_tvalid
+);
+
+cic_compiler_160r
+u1_cic_compiler(
+    .aclk                       (clk_25d6m                  ),                              // input wire aclk
+    .s_axis_data_tdata          (ram_qdata                  ),    // input wire [15 : 0] s_axis_data_tdata
+    .s_axis_data_tvalid         (send_flag                  ),  // input wire s_axis_data_tvalid
+    .s_axis_data_tready         (send_ready                 ),  // output wire s_axis_data_tready
+    .m_axis_data_tdata          (baseband_qdata            ),    // output wire [31 : 0] m_axis_data_tdata
+    .m_axis_data_tvalid         (/*not used*/               )    // output wire m_axis_data_tvalid
+);
+
+`endif
+
 
 mult_signed
 u0_mult_signed(
     .CLK                        (clk_25d6m                  ),      // input wire CLK
-    .A                          (baseband_idata             ),      // input wire [15 : 0] A
+    .A                          (baseband_idata[31:15]      ),      // input wire [15 : 0] A
     .B                          (lo_sin                     ),      // input wire [15 : 0] B
     .P                          (duc_idata                  )       // output wire [31 : 0] P
 );
@@ -259,7 +341,7 @@ u0_mult_signed(
 mult_signed
 u1_mult_signed(
     .CLK                        (clk_25d6m                  ),      // input wire CLK
-    .A                          (baseband_qdata             ),      // input wire [15 : 0] A
+    .A                          (baseband_qdata[31:15]      ),      // input wire [15 : 0] A
     .B                          (lo_cos                     ),      // input wire [15 : 0] B
     .P                          (duc_qdata                  )       // output wire [31 : 0] P
 );
@@ -324,7 +406,29 @@ u_out_fifo(
 assign ofifo_ren = (~ofifo_empty) & duc_tready;
 assign duc_tdata = ofifo_dout;
 assign duc_tvalid = ~ofifo_empty;
-assign duc_tlast = 1'b0;
+
+always @ (posedge axis_clk or negedge rst_n )
+begin
+    if (rst_n == 1'b0)
+        begin
+            tcnt <= 8'd0;
+            duc_tlast <= 1'b0;
+        end
+    else
+        begin
+            if({duc_tvalid,duc_tready,duc_tlast} == 3'b111)
+                tcnt <= #U_DLY 8'd0;
+            else if({duc_tvalid,duc_tready} == 2'b11)
+                tcnt <= #U_DLY tcnt + 8'd1;
+            else;
+
+            if({duc_tvalid,duc_tready,duc_tlast} == 3'b111)
+                duc_tlast <= #U_DLY 1'b0;
+            else if({duc_tvalid,duc_tready} == 2'b11 && tcnt == 8'hFE)
+                duc_tlast <= #U_DLY 1'b1;
+            else;
+        end
+end
 
 endmodule
 

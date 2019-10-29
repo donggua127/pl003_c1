@@ -82,6 +82,11 @@ module Waveform(
     input   wire [3:0]  axis_1_rx_tkeep_in      ,
     input   wire        axis_1_rx_tlast_in      ,
     input   wire        axis_1_rx_tvalid_in     ,
+    output  wire [31:0] axis_1_tx_tdata_out     ,
+    output  wire [3:0]  axis_1_tx_tkeep_out     ,
+    output  wire        axis_1_tx_tlast_out     ,
+    input   wire        axis_1_tx_tready_in     ,
+    output  wire        axis_1_tx_tvalid_out    ,
     // AXI stream interface for inter-FPGA communication (Shared)
     input   wire        axis_pre_clk_in         ,
     input   wire [31:0] axis_pre_rx_tdata_in    ,

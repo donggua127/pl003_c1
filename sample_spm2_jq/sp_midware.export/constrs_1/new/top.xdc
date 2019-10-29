@@ -11,4 +11,3 @@ set_property LOC GTXE2_CHANNEL_X0Y3 [get_cells bus_architecture/bus_architecture
 
 
 
-

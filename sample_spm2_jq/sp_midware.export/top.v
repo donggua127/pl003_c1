@@ -2,7 +2,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: CETC-10
 // Engineer: zhangqsh
-//
+// 
 // Create Date: 2017/02/15 13:59:18
 // Design Name: SP_MIDWARE
 // Module Name: top
@@ -11,12 +11,12 @@
 // Tool Versions: Vivado 2017.2
 // Description: This module is the top module for the design.
 // flash device:28f00bp30e-bpi-x16,128MB
-// Dependencies:
-//
+// Dependencies: 
+// 
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-//
+// 
 //////////////////////////////////////////////////////////////////////////////////
 
 module top(
@@ -27,11 +27,11 @@ module top(
     (* ASYNC_REG = "TRUE" *)
     input   wire        reset_in_pad                    ,   // System reset, active low
     output  wire        heartbeat_out_pad               ,   // Heartbeat signal to DSP28235, active rising edge
-
+    
     // Clocks for MGT
     input   wire        gtx_clk_125m_n_in_pad           ,
     input   wire        gtx_clk_125m_p_in_pad           ,
-
+    
 //---------------------------------------+--------------------------------------
 //--------------------------------- TMS320C6455 --------------------------------
     // DSP6455 EMIFA
@@ -44,7 +44,7 @@ module top(
     input   wire        dsp6455_0_emif_aoe_in_pad       ,
     input   wire        dsp6455_0_emif_awe_in_pad       ,
     output  wire        dsp6455_0_intr_out_pad          ,
-
+    
 //    input   wire        dsp6455_1_emif_ce2_in_pad       ,
     input   wire        dsp6455_1_emif_ce4_in_pad       ,
     input   wire        dsp6455_1_emif_rnw_in_pad       ,
@@ -54,7 +54,7 @@ module top(
     inout   wire [31:0] dsp6455_1_emif_data_inout_pad   ,
     input   wire        dsp6455_1_emif_aoe_in_pad       ,
     input   wire        dsp6455_1_emif_awe_in_pad       ,
-
+    
 //---------------------------------------+--------------------------------------
 //------------------------------ FLASH(28f00bp30e-bpi-x16) ------------------------------
     output  wire        s29gl_fcsb_out_pad              ,
@@ -63,7 +63,7 @@ module top(
     output  wire [22:0] s29gl_addr_out_pad              ,
     inout   wire [15:0] s29gl_data_inout_pad            ,
     output  wire        s29gl_advb_out_pad              ,
-
+    
 //---------------------------------------+--------------------------------------
 //--------------------------------- LRM RS485s ---------------------------------
     (* ASYNC_REG = "TRUE" *)
@@ -71,12 +71,12 @@ module top(
     output  wire [7:0]  lrm_rs485_txd_out_pad           ,
     output  wire [7:0]  lrm_rs485_den_out_pad           ,
     output  wire [7:0]  lrm_rs485_ren_out_pad           ,
-
+   
 //---------------------------------------+--------------------------------------
 //---------------------------------- LRM LVDSs ---------------------------------
     inout   wire [35:0] lrm_lvds_p_inout_pad            ,
     inout   wire [35:0] lrm_lvds_n_inout_pad            ,
-
+   
 //---------------------------------------+--------------------------------------
 //--------------------------------- Inter FPGA ---------------------------------
 `ifdef FPGA0
@@ -97,12 +97,10 @@ module top(
     inout   wire [39:0] lvcmos_next_inout_pad           ,
     inout   wire [11:0] lvds_next_p_inout_pad           ,
     inout   wire [11:0] lvds_next_n_inout_pad           ,
-`elsif OTHERS
+`else
     inout   wire [39:0] lvcmos_pre_inout_pad            ,
     inout   wire [11:0] lvds_pre_p_inout_pad            ,
     inout   wire [11:0] lvds_pre_n_inout_pad            ,
-`else
-
 `endif
 
 //---------------------------------------+--------------------------------------
@@ -111,22 +109,22 @@ module top(
     input   wire        mgt_rx0_n_in_pad                ,
     output  wire        mgt_tx0_p_out_pad               ,
     output  wire        mgt_tx0_n_out_pad               ,
-
+    
     input   wire        mgt_rx1_p_in_pad                ,
     input   wire        mgt_rx1_n_in_pad                ,
     output  wire        mgt_tx1_p_out_pad               ,
     output  wire        mgt_tx1_n_out_pad               ,
-
+    
     input   wire        mgt_rx2_p_in_pad                ,
     input   wire        mgt_rx2_n_in_pad                ,
     output  wire        mgt_tx2_p_out_pad               ,
     output  wire        mgt_tx2_n_out_pad               ,
-
+    
     input   wire        mgt_rx3_p_in_pad                ,
     input   wire        mgt_rx3_n_in_pad                ,
     output  wire        mgt_tx3_p_out_pad               ,
     output  wire        mgt_tx3_n_out_pad               ,
-
+    
 //---------------------------------------+--------------------------------------
 //------------------------------------- GPO ------------------------------------
     output  wire [5:0]  gpo_out_pad                     ,
@@ -136,24 +134,24 @@ module top(
     output  wire [3:0]  board_led_out_pad               ,   // LEDs on board, light when high
     output  wire [1:0]  debug_led_out_pad                   // LEDs on external debug board
     );
-
+    
 ////////////////////////////////////////////////////////////////////////////////
 //                             OUTPUT ASSIGNMENT
 ////////////////////////////////////////////////////////////////////////////////
     assign gpo_out_pad[4:0] = 5'd0;
     assign s29gl_advb_out_pad = 1'b0;
-
+    
 ////////////////////////////////////////////////////////////////////////////////
 //                            PARAMETER DECLARATION
 ////////////////////////////////////////////////////////////////////////////////
-
+    
 ////////////////////////////////////////////////////////////////////////////////
 //                            REG & WIRE DECLARATION
 ////////////////////////////////////////////////////////////////////////////////
     //=============== Clock&Reset ================
     wire            clk_100m_ibuf;
     wire            clk_32m512_ibuf;
-
+    
     //=============== Inner control ==============
     wire            sat_mode;       // Control the mutiplex of LRM LVDS output
     wire            links_config;   // 1 JIDS, 0 ohters
@@ -164,32 +162,32 @@ module top(
     wire [7:0]      spm_markaddr;
     //=============== Information ================
     wire [7:0]      db_1_in;
-
+    
     //================ Inter-FPGA ================
     wire [39:0]     lvcmos_pre_in;
     wire [39:0]     lvcmos_pre_out;
     wire [39:0]     lvcmos_pre_tri;
-
+    
     wire [39:0]     lvcmos_next_in;
     wire [39:0]     lvcmos_next_out;
     wire [39:0]     lvcmos_next_tri;
-
+    
     wire [11:0]     lvds_pre_in;
     wire [11:0]     lvds_pre_out;
     wire [11:0]     lvds_pre_tri;
-
+    
     wire [11:0]     lvds_next_in;
     wire [11:0]     lvds_next_out;
     wire [11:0]     lvds_next_tri;
-
+    
     //================ LRM RS485 =================
     wire [5:0]      lrm_rs485_txd;  // RS485 discrete output
     // wire []      lrm_rs485_rxd;
-
+    
     // To UVPA/MCTRA/UVPS etc.
     wire [4:0]      uart_txd;       // UART (RS485/LVDS)
     wire [4:0]      uart_rxd;
-
+    
     //================= LRM LVDS =================
     wire [35:0]     lrm_lvds_buf_in;
     wire [35:0]     lrm_lvds_buf_out;
@@ -198,10 +196,10 @@ module top(
     // signals is only for output signals.
     wire [2:0]      lrm_lvds_25_23_as_spi;
     wire [2:0]      lrm_lvds_25_23_as_dis;
-
+    
     wire [6:0]      lrm_lvds_in;    // LVDS discrete input
     wire [18:0]     lrm_lvds_out;   // LVDS discrete output
-
+    
     // SPI to DCTR
     wire [2:0]      spi_rx_sclk;    // SPI (LVDS)
     wire [2:0]      spi_rx_sdi;
@@ -209,30 +207,30 @@ module top(
     wire [2:0]      spi_tx_sclk;
     wire [2:0]      spi_tx_sdo;
     wire [2:0]      spi_tx_sen;
-
+    
     //========== DSP6455 EMIFA interface =========
     wire            dsp6455_0_emif_ce;
     wire [3:0]      dsp6455_0_emif_be;
     wire            dsp6455_0_emif_ardy;
     wire [31:0]     dsp6455_0_emif_addr;
     wire [31:0]     dsp6455_0_emif_rdata;
-    wire            dsp6455_0_emif_we;
-    wire            dsp6455_0_emif_oe;
+    wire            dsp6455_0_emif_we; 
+    wire            dsp6455_0_emif_oe;     
     reg  [31:0]     dsp6455_0_emif_lock = 32'd0;
     wire [31:0]     dsp6455_0_emif_wdata;
     wire            dsp6455_0_intr;
-
+    
     wire            dsp6455_1_emif_ce;
     wire [3:0]      dsp6455_1_emif_be;
     wire            dsp6455_1_emif_ardy;
     wire [31:0]     dsp6455_1_emif_addr;
     wire [31:0]     dsp6455_1_emif_rdata;
-    wire            dsp6455_1_emif_we;
-    wire            dsp6455_1_emif_oe;
+    wire            dsp6455_1_emif_we; 
+    wire            dsp6455_1_emif_oe; 
     reg [31:0]      dsp6455_1_emif_lock = 32'd0;
     wire [31:0]     dsp6455_1_emif_wdata;
     wire            dsp6455_1_intr;
-
+    
     //============= Waveform signal ==============
     wire            wf_axi_lite_aclk;
     wire            wf_axi_lite_aresetn;
@@ -241,7 +239,7 @@ module top(
     wire [7:0]      wf_intr;
     wire [6:0]      wf_sig_in;
     wire [24:0]     wf_sig_out;
-
+    
     //============ WF AXI Lite master ============
     wire [31:0]     wf_s_axi_lite_0_araddr;
     wire [2:0]      wf_s_axi_lite_0_arprot;
@@ -281,7 +279,7 @@ module top(
     wire            wf_s_axi_lite_1_wready;
     wire [3:0]      wf_s_axi_lite_1_wstrb;
     wire            wf_s_axi_lite_1_wvalid;
-
+    
     //============== WF AXI stream ===============
     wire            wf_axis_zif_clk;
     wire [31:0]     wf_axis_0_rx_tdata;
@@ -294,13 +292,18 @@ module top(
     wire            wf_axis_0_tx_tlast;
     wire            wf_axis_0_tx_tready;
     wire            wf_axis_0_tx_tvalid;
-
+    
     wire [31:0]     wf_axis_1_rx_tdata;
     wire [3:0]      wf_axis_1_rx_tkeep;
     wire            wf_axis_1_rx_tlast;
     wire            wf_axis_1_rx_tvalid;
     wire            wf_axis_1_rx_tready;
-
+    wire [31:0]     wf_axis_1_tx_tdata;
+    wire [3:0]      wf_axis_1_tx_tkeep;
+    wire            wf_axis_1_tx_tlast;
+    wire            wf_axis_1_tx_tready;
+    wire            wf_axis_1_tx_tvalid;
+    
     wire            wf_axis_pre_clk;
     wire [31:0]     wf_axis_pre_rx_tdata;
     wire [3:0]      wf_axis_pre_rx_tkeep;
@@ -312,7 +315,7 @@ module top(
     wire            wf_axis_pre_tx_tlast;
     wire            wf_axis_pre_tx_tready;
     wire            wf_axis_pre_tx_tvalid;
-
+    
     wire            wf_axis_next_clk;
     wire [31:0]     wf_axis_next_rx_tdata;
     wire [3:0]      wf_axis_next_rx_tkeep;
@@ -324,14 +327,14 @@ module top(
     wire            wf_axis_next_tx_tlast;
     wire            wf_axis_next_tx_tready;
     wire            wf_axis_next_tx_tvalid;
-
+    
     //============= Waveform signal ==============
 //    wire            mw_429_gd_high;
 //    wire            mw_429_gd_low;
     wire            mw_b_code;
-
+    
     genvar k;
-
+    
 ////////////////////////////////////////////////////////////////////////////////
 //                                     CODE
 ////////////////////////////////////////////////////////////////////////////////
@@ -342,7 +345,7 @@ module top(
 // 4. DSP EMIF interface
 // 5. Midware
 // 6. User waveform
-//
+// 
 //======================================+=======================================
 // 1.                                 Clock
 //------------------------------------------------------------------------------
@@ -350,33 +353,33 @@ module top(
 //
 //  100MHz---[IBUFGDS]---[clk_gen]---System
 //                    |--------------Waveform
-//
+//  
 //  32.512MHz---[IBUFGDS]---Waveform
-//
+//  
 //------------------------------------------------------------------------------
     // 100MHz
-    IBUFG clkin100M_buf
+    IBUFG clkin100M_buf 
     (
-        .O  (clk_100m_ibuf),
+        .O  (clk_100m_ibuf), 
         .I  (clk_100m_in_pad)
     );
-
+    
     // 32.512MHz
-    IBUFG clkin32M512_buf
+    IBUFG clkin32M512_buf 
     (
-        .O  (clk_32m512_ibuf),
+        .O  (clk_32m512_ibuf), 
         .I  (clk_32m512_in_pad)
     );
-
+    
 //======================================+=======================================
 // 2.                         Inter-FPGA interface
 //------------------------------------------------------------------------------
 `ifdef FPGA0
     assign db_1_in = 8'd0;
-
+    
     assign lvcmos_pre_in = 40'd0;
     assign lvds_pre_in =12'd0;
-
+    
     generate
     for (k = 0; k < 40; k = k + 1)
     begin
@@ -392,7 +395,7 @@ module top(
             .T(lvcmos_next_tri[k])          // 3-state enable input, high=input, low=output
         );
     end
-
+    
     for (k = 0; k < 12; k = k + 1)
     begin
         IOBUFDS #(
@@ -409,12 +412,12 @@ module top(
         );
     end
     endgenerate
-
+    
 `elsif FPGA1
     assign db_1_in = 8'd1;
-
+    
     assign lvcmos_next_in[39:20] = 20'd0;
-
+    
     generate
     for (k = 0; k < 40; k = k + 1)
     begin
@@ -430,7 +433,7 @@ module top(
             .T(lvcmos_pre_tri[k])             // 3-state enable input, high=input, low=output
         );
     end
-
+    
     for (k = 0; k < 20; k = k + 1)
     begin
         IOBUF #(
@@ -445,7 +448,7 @@ module top(
             .T(lvcmos_next_tri[k])            // 3-state enable input, high=input, low=output
         );
     end
-
+    
     for (k = 0; k < 12; k = k + 1)
     begin
         IOBUFDS #(
@@ -462,7 +465,7 @@ module top(
         );
     end
     endgenerate
-
+    
     generate
     for (k = 0; k < 12; k = k + 1)
     begin
@@ -480,12 +483,12 @@ module top(
         );
     end
     endgenerate
-
+    
 `elsif FPGA2
     assign db_1_in = 8'd2;
-
+    
     assign lvcmos_pre_in[39:20] = 20'd0;
-
+    
     generate
     for (k = 0; k < 20; k = k + 1)
     begin
@@ -501,7 +504,7 @@ module top(
             .T(lvcmos_pre_tri[k])             // 3-state enable input, high=input, low=output
         );
     end
-
+    
     for (k = 0; k < 40; k = k + 1)
     begin
         IOBUF #(
@@ -516,7 +519,7 @@ module top(
             .T(lvcmos_next_tri[k])          // 3-state enable input, high=input, low=output
         );
     end
-
+    
     for (k = 0; k < 12; k = k + 1)
     begin
         IOBUFDS #(
@@ -533,7 +536,7 @@ module top(
         );
     end
     endgenerate
-
+    
     generate
     for (k = 0; k < 12; k = k + 1)
     begin
@@ -551,13 +554,13 @@ module top(
         );
     end
     endgenerate
-
-`elsif OTHERS
+    
+`else
     assign db_1_in = 8'd3;
-
+    
     assign lvcmos_next_in = 40'd0;
     assign lvds_next_in = 12'd0;
-
+    
     generate
     for (k = 0; k < 40; k = k + 1)
     begin
@@ -573,7 +576,7 @@ module top(
             .T(lvcmos_pre_tri[k])           // 3-state enable input, high=input, low=output
         );
     end
-
+    
     for (k = 0; k < 12; k = k + 1)
     begin
         IOBUFDS #(
@@ -590,14 +593,7 @@ module top(
         );
     end
     endgenerate
-`else
-    assign db_1_in = 8'd4;
-
-    assign lvcmos_next_in = 40'd0;
-    assign lvds_next_in = 12'd0;
-    assign lvcmos_pre_in = 40'd0;
-    assign lvds_pre_in = 12'd0;
-
+    
 `endif
 
 //======================================+=======================================
@@ -608,16 +604,16 @@ module top(
 // In this part, we set the direction of RS485 and differential-buffered LVDS.
 // We classified the signals into bus and discrete signals. Bus signals are UART
 // and SPI. Then we concatenate all discrete signals into vectors of input/output
-// signals to/from waveform component, and named them as 'wf_sig_in' and
+// signals to/from waveform component, and named them as 'wf_sig_in' and 
 // 'wf_sig_out'. For different waveform, the usage of discrete signals is
-// different. See channel sheet of <<SPM back board connection.xlsx>> for the
+// different. See channel sheet of <<SPM back board connection.xlsx>> for the 
 // usage of discrete signals for every waveform.
 //------------------------------------------------------------------------------
-
+    
     // Set direction for RS485
     assign lrm_rs485_den_out_pad = 8'b1110_1101; // Active high
     assign lrm_rs485_ren_out_pad = 8'b1110_1101; // Active low
-
+    
     // Set direction for LVDS
     generate
     for (k = 0; k < 36; k = k + 1)
@@ -636,19 +632,19 @@ module top(
         );
     end
     endgenerate
-    assign lrm_lvds_buf_tri = 36'b0111_1111_1111_1111_1011_0000_1110_0011_1000;
-
+    assign lrm_lvds_buf_tri = 36'b0111_1110_1111_1111_1011_0000_1110_0011_1000;
+    
     // --------- Remap RS485 and LVDS ---------
     // Refer to the MAX_TYPE sheet of <<SPM back board connection.xlsx>>.
     // UART
-    assign {lrm_lvds_buf_out[18], lrm_lvds_buf_out[7],lrm_lvds_buf_out[1], lrm_rs485_txd_out_pad[2], lrm_rs485_txd_out_pad[0]} = scm_mode ? {uart_txd[4:3],lrm_lvds_buf_in[29],uart_txd[1],lrm_lvds_buf_in[34]}:uart_txd;
+    assign {lrm_lvds_buf_out[18], lrm_lvds_buf_out[7],lrm_lvds_buf_out[1], lrm_rs485_txd_out_pad[2], lrm_rs485_txd_out_pad[0]} = scm_mode ? {uart_txd[4:3],lrm_lvds_buf_in[30],uart_txd[1],lrm_lvds_buf_in[34]}:uart_txd;
 
-    assign uart_rxd = {lrm_lvds_buf_in[17], lrm_lvds_buf_in[10], (scm_mode | lrm_lvds_buf_in[4]),1'b1, (scm_mode | lrm_rs485_rxd_in_pad[1])};
-
+    assign uart_rxd = scm_mode ? {lrm_lvds_buf_in[17], lrm_lvds_buf_in[10], 3'b111} : {lrm_lvds_buf_in[17], lrm_lvds_buf_in[10], lrm_lvds_buf_in[4],1'b1, lrm_rs485_rxd_in_pad[1]};
+    
     // RS485 Discrete
 
     // assign lrm_rs485_rxd = ; // No RS485 input
-
+    
     // SPI, lrm_lvds_buf_in[22:20] and lrm_lvds_buf_out[25:23] are re-used as SPI for SAT waveform
 //    assign spi_rx_sclk  = {lrm_lvds_buf_in[20], lrm_lvds_buf_in[13], lrm_lvds_buf_in[2]};
 //    assign spi_rx_sen   = ~{lrm_lvds_buf_in[21], lrm_lvds_buf_in[14], lrm_lvds_buf_in[3]};
@@ -656,17 +652,17 @@ module top(
 //    assign {lrm_lvds_25_23_as_spi[0], lrm_lvds_buf_out[16], lrm_lvds_buf_out[5]} = spi_tx_sclk[2:0];
 //    assign {lrm_lvds_25_23_as_spi[1], lrm_lvds_buf_out[17], lrm_lvds_buf_out[6]} = ~spi_tx_sen[2:0];
 //    assign {lrm_lvds_25_23_as_spi[2], lrm_lvds_buf_out[18], lrm_lvds_buf_out[7]} = spi_tx_sdo[2:0];
-
+    
     // LVDS Discrete
     assign lrm_lvds_in = {3'b0,mw_b_code,2'b0, lrm_lvds_buf_in[16]};
-
-    assign lrm_lvds_buf_out[15:12] = scm_mode ? {lrm_lvds_buf_in[22:20],lrm_lvds_buf_in[31]} : {lrm_lvds_out[5:3],lrm_lvds_out[0]};
-
+    
+    assign lrm_lvds_buf_out[12] = scm_mode ? lrm_lvds_buf_in[31] : lrm_lvds_out[0];
+    assign lrm_lvds_buf_out[15:13] = lrm_lvds_buf_in[22:20];
     assign lrm_lvds_buf_out[35] = scm_mode ? lrm_rs485_rxd_in_pad[1] : 1'b1;
-    assign lrm_lvds_buf_out[0] = scm_mode ? lrm_lvds_buf_in[4] : 1'b1;
+    assign lrm_lvds_buf_out[28] = scm_mode ? lrm_lvds_buf_in[4] : 1'b1;
     // Mutiplex lrm_lvds_buf_out[25:23] between SAT waveform and others
 //    assign lrm_lvds_buf_out[25:23] = (sat_mode) ? lrm_lvds_25_23_as_spi : lrm_lvds_25_23_as_dis;
-
+    
     // --------- Concatenate discrete signals ---------
     // TO waveform
     assign wf_sig_in = lrm_lvds_in;
@@ -682,10 +678,10 @@ module top(
     assign dsp6455_0_emif_we    = dsp6455_0_emif_awe_in_pad;
     assign dsp6455_0_emif_be    = ~dsp6455_0_emif_be_in_pad;
     assign dsp6455_0_emif_ardy_out_pad = dsp6455_0_emif_ardy | dsp6455_0_emif_ce ? 1'bz : 1'b0;
-
+    
     // dsp6455_0_emif_addr_in_pad[19:11] device choise; [10:0] device operation offset address
     assign dsp6455_0_emif_addr    = {10'd0, dsp6455_0_emif_addr_in_pad[19:0], 2'b00};
-
+    
     assign dsp6455_0_emif_data_inout_pad = ((dsp6455_0_emif_ce == 1'b0)
                                 && (dsp6455_0_emif_oe == 1'b0))
                                 ? dsp6455_0_emif_rdata : 32'hzzzzzzzz;
@@ -707,15 +703,15 @@ module top(
     assign dsp6455_1_emif_we    = dsp6455_1_emif_awe_in_pad;
     assign dsp6455_1_emif_be    = ~dsp6455_1_emif_be_in_pad;
     assign dsp6455_1_emif_ardy_out_pad = dsp6455_1_emif_ardy | dsp6455_1_emif_ce ? 1'bz : 1'b0;
-
+    
     assign dsp6455_1_emif_addr      = {10'd0, dsp6455_1_emif_addr_in_pad[19:0],2'b0};
-
+    
     assign dsp6455_1_emif_data_inout_pad = ((dsp6455_1_emif_ce == 1'b0)
                                 && (dsp6455_1_emif_oe == 1'b0))
                                 ? dsp6455_1_emif_rdata : 32'hzzzzzzzz;
     assign dsp6455_1_emif_wdata   = dsp6455_1_emif_data_inout_pad;
     assign gpo_out_pad[5] = dsp6455_1_intr;   // Used as interrupt to DSP 1
-
+    
 //======================================+=======================================
 // 5.                               Midware
 //------------------------------------------------------------------------------
@@ -854,6 +850,11 @@ module top(
         .wf_data_axis_1_rx_tlast    (wf_axis_1_rx_tlast     ),
         .wf_data_axis_1_rx_tvalid   (wf_axis_1_rx_tvalid    ),
         .wf_data_axis_1_rx_tready   (1'b1                   ),
+        .wf_data_axis_1_tx_tdata    (wf_axis_1_tx_tdata     ),
+        .wf_data_axis_1_tx_tkeep    (wf_axis_1_tx_tkeep     ),
+        .wf_data_axis_1_tx_tlast    (wf_axis_1_tx_tlast     ),
+        .wf_data_axis_1_tx_tvalid   (wf_axis_1_tx_tvalid    ),
+        .wf_data_axis_1_tx_tready   (wf_axis_1_tx_tready    ),
         // AXI stream interface for inter-FPGA communication (Shared)
         .s_axis_pre_rx_tdata        (wf_axis_pre_rx_tdata   ),
         .s_axis_pre_rx_tkeep        (wf_axis_pre_rx_tkeep   ),
@@ -894,11 +895,11 @@ module top(
         .board_led_out              (board_led_out_pad      ),
         .debug_led_out              (debug_led_out_pad      )
     );
-
+    
     assign s29gl_addr_out_pad[19:0] = {flash_addr[20:2], ~flash_addr[1]};
     assign s29gl_addr_out_pad[22:20] = flash_zone_sel;
     assign s29gl_fweb_out_pad = flash_intf_qwen[0];
-
+    
     // Midware FPGA
 `ifdef FPGA0
     assign mw_b_code = lrm_lvds_buf_in[19];
@@ -909,7 +910,7 @@ module top(
 `else
     assign mw_b_code = 1'b0;
 `endif
-
+    
 //======================================+=======================================
 // 6.                            User waveform
 //------------------------------------------------------------------------------
@@ -979,6 +980,11 @@ module top(
         .axis_1_rx_tkeep_in         (wf_axis_1_rx_tkeep     ),
         .axis_1_rx_tlast_in         (wf_axis_1_rx_tlast     ),
         .axis_1_rx_tvalid_in        (wf_axis_1_rx_tvalid    ),
+        .axis_1_tx_tdata_out        (wf_axis_1_tx_tdata     ),
+        .axis_1_tx_tkeep_out        (wf_axis_1_tx_tkeep     ),
+        .axis_1_tx_tlast_out        (wf_axis_1_tx_tlast     ),
+        .axis_1_tx_tready_in        (wf_axis_1_tx_tready    ),
+        .axis_1_tx_tvalid_out       (wf_axis_1_tx_tvalid    ),
         // AXI stream interface for inter-FPGA communication (Shared)
         .axis_pre_clk_in            (wf_axis_zif_clk        ),
         .axis_pre_rx_tdata_in       (wf_axis_pre_rx_tdata   ),
@@ -1019,7 +1025,7 @@ module top(
         // Interrupt
         .intr_out                   (wf_intr                )
     );
-
+    
 endmodule
 
 //module Waveform(

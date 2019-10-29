@@ -105,7 +105,7 @@ u_axi4_lite(
     .cpu_rdata                  (cpu_rdata                  )
 );
 
-assign lbs_addr = cpu_addr;
+assign lbs_addr = {2'd0,cpu_addr[15:2]};
 assign lbs_din = cpu_wdata;
 assign cpu_rdata = lbs_dout;
 always @(posedge axi4_lite_clk or negedge rst_n)
