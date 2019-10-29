@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="2001000000001fs"></ZoomEndTime>
-      <Cursor1Time time="2001000000000fs"></Cursor1Time>
+      <ZoomStartTime time="65804189193fs"></ZoomStartTime>
+      <ZoomEndTime time="66213478052fs"></ZoomEndTime>
+      <Cursor1Time time="65881275000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="244"></NameColumnWidth>
-      <ValueColumnWidth column_width="122"></ValueColumnWidth>
+      <ValueColumnWidth column_width="118"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="8" />
    <wave_markers>
@@ -96,9 +96,9 @@
          <obj_property name="ElementShortName">ram_waddr[13:0]</obj_property>
          <obj_property name="ObjectShortName">ram_waddr[13:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="/testbench/u_conv_top/u_ddc_conv/ififo_wen_enb" type="array">
-         <obj_property name="ElementShortName">ififo_wen_enb[4:0]</obj_property>
-         <obj_property name="ObjectShortName">ififo_wen_enb[4:0]</obj_property>
+      <wvobject fp_name="/testbench/u_conv_top/u_ddc_conv/ififo_wen_enb" type="logic">
+         <obj_property name="ElementShortName">ififo_wen_enb</obj_property>
+         <obj_property name="ObjectShortName">ififo_wen_enb</obj_property>
       </wvobject>
       <wvobject fp_name="/testbench/u_conv_top/u_ddc_conv/mult_idata_cut" type="array">
          <obj_property name="ElementShortName">mult_idata_cut[31:0]</obj_property>
@@ -361,16 +361,15 @@
          <obj_property name="ElementShortName">baseband_idata[31:0]</obj_property>
          <obj_property name="ObjectShortName">baseband_idata[31:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-         <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
-         <obj_property name="CellHeight">100</obj_property>
+         <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
       </wvobject>
       <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/ram_wen" type="logic">
          <obj_property name="ElementShortName">ram_wen</obj_property>
          <obj_property name="ObjectShortName">ram_wen</obj_property>
       </wvobject>
       <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/ram_waddr" type="array">
-         <obj_property name="ElementShortName">ram_waddr[11:0]</obj_property>
-         <obj_property name="ObjectShortName">ram_waddr[11:0]</obj_property>
+         <obj_property name="ElementShortName">ram_waddr[13:0]</obj_property>
+         <obj_property name="ObjectShortName">ram_waddr[13:0]</obj_property>
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/ram_din" type="array">

@@ -43,6 +43,7 @@ wire                                axis_rx_tvalid;
 wire    [31:0]                      axis_rx_tdata;
 wire                                axis_rx_tlast;
 wire    [31:0]                      lbs_dout;
+wire                                led_pulse;
 
 initial
 begin
@@ -134,16 +135,24 @@ u_conv_top(
     .lbs_dout                   (lbs_dout                   ),
     .lbs_we                     (lbs_we                     ),
     .lbs_re                     (lbs_re                     ),
-
-    .axis_clk                   (axis_clk                   ),
-    .axis_rx_tready             (axis_rx_tready             ),
-    .axis_rx_tvalid             (axis_rx_tvalid             ),
-    .axis_rx_tdata              (axis_rx_tdata              ),
-    .axis_rx_tlast              (axis_rx_tlast              ),
-    .axis_tx_tvalid             (axis_tx_tvalid             ),
-    .axis_tx_tdata              (axis_tx_tdata              ),
-    .axis_tx_tready             (axis_tx_tready             ),
-    .axis_tx_tlast              (axis_tx_tlast              )
+    .axis_0_rx_tready           (axis_rx_tready             ),
+    .axis_0_rx_tvalid           (axis_rx_tvalid             ),
+    .axis_0_rx_tdata            (axis_rx_tdata              ),
+    .axis_0_rx_tlast            (axis_rx_tlast              ),
+    .axis_1_rx_tready           (                           ),
+    .axis_1_rx_tvalid           (1'b0                       ),
+    .axis_1_rx_tdata            (32'd0                      ),
+    .axis_1_rx_tlast            (1'b0                       ),
+    .axis_0_tx_tvalid           (axis_tx_tvalid             ),
+    .axis_0_tx_tdata            (axis_tx_tdata              ),
+    .axis_0_tx_tready           (axis_tx_tready             ),
+    .axis_0_tx_tlast            (axis_tx_tlast              ),
+    .axis_1_tx_tvalid           (/*not used*/               ),
+    .axis_1_tx_tdata            (/*not used*/               ),
+    .axis_1_tx_tready           (1'b0                       ),
+    .axis_1_tx_tlast            (/*not used*/               ),
+    .led_pulse                  (led_pulse                  ),
+    .axis_clk                   (axis_clk                   )
 );
 
 assign axis_rx_tvalid = axis_tx_tvalid;
