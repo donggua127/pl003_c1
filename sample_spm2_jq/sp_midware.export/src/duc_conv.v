@@ -55,6 +55,8 @@ localparam                          CMD_DOWN_TRIG = 32'h0000_FFFF;
 
 // Register Define
 reg     [7:0]                       tcnt;
+reg     [15:0]                      ram_idata;
+reg     [15:0]                      ram_qdata;
 (* MARK_DEBUG="true" *)
 reg                                 down_start;
 (* MARK_DEBUG="true" *)
@@ -210,6 +212,8 @@ begin
             send_end <= 1'b0;
             baseband_idata <= 16'd0;
             baseband_qdata <= 16'd0;
+            ram_idata <= 16'd3000;
+            ram_qdata <= 16'd3000;
         end
     else
         begin
@@ -239,6 +243,16 @@ begin
                 ram_raddr <= #U_DLY 12'd0;
             else;
 
+            if(send_flag == 1'b1)
+                ram_idata <= #U_DLY ram_dout[31:16];
+            else
+                ram_idata <= #U_DLY 16'd3000;
+
+            if(send_flag == 1'b1)
+                ram_qdata <= #U_DLY ram_dout[31:16];
+            else
+                ram_qdata <= #U_DLY 16'd3000;
+
             if(cic_valid == 1'b1)
                 baseband_idata <= #U_DLY cic_idata[30:15];
             else
@@ -255,20 +269,20 @@ assign send_ready = send_iready & send_qready;
 cic_compiler_160r
 u0_cic_compiler(
     .aclk                       (clk_25d6m                  ),                              // input wire aclk
-    .s_axis_data_tdata          (ram_dout[31:16]            ),    // input wire [15 : 0] s_axis_data_tdata
-    .s_axis_data_tvalid         (send_flag                  ),  // input wire s_axis_data_tvalid
-    .s_axis_data_tready         (send_iready                 ),  // output wire s_axis_data_tready
-    .m_axis_data_tdata          (cic_idata                 ),    // output wire [31 : 0] m_axis_data_tdata
+    .s_axis_data_tdata          (ram_idata                  ),    // input wire [15 : 0] s_axis_data_tdata
+    .s_axis_data_tvalid         (1'b1                       ),  // input wire s_axis_data_tvalid
+    .s_axis_data_tready         (send_iready                ),  // output wire s_axis_data_tready
+    .m_axis_data_tdata          (cic_idata                  ),    // output wire [31 : 0] m_axis_data_tdata
     .m_axis_data_tvalid         (cic_valid                  )    // output wire m_axis_data_tvalid
 );
 
 cic_compiler_160r
 u1_cic_compiler(
     .aclk                       (clk_25d6m                  ),                              // input wire aclk
-    .s_axis_data_tdata          (ram_dout[15:0]             ),    // input wire [15 : 0] s_axis_data_tdata
-    .s_axis_data_tvalid         (send_flag                  ),  // input wire s_axis_data_tvalid
+    .s_axis_data_tdata          (ram_qdata                  ),    // input wire [15 : 0] s_axis_data_tdata
+    .s_axis_data_tvalid         (1'b1                       ),  // input wire s_axis_data_tvalid
     .s_axis_data_tready         (send_qready                ),  // output wire s_axis_data_tready
-    .m_axis_data_tdata          (cic_qdata                 ),    // output wire [31 : 0] m_axis_data_tdata
+    .m_axis_data_tdata          (cic_qdata                  ),    // output wire [31 : 0] m_axis_data_tdata
     .m_axis_data_tvalid         (/*not used*/               )    // output wire m_axis_data_tvalid
 );
 
