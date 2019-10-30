@@ -88,7 +88,7 @@ dds_compiler_4d2M
 u_dds_compiler_4d2m(
     .aclk                       (clk_25d6m                  ),                              // input wire aclk
     .m_axis_data_tvalid         (lo_valid                   ),  // output wire m_axis_data_tvalid
-    .m_axis_data_tdata          ({lo_cos,lo_sin}            )     // output wire [31 : 0] m_axis_data_tdata
+    .m_axis_data_tdata          ({lo_sin,lo_cos}            )     // output wire [31 : 0] m_axis_data_tdata
 );
 
 always @(posedge axis_clk)

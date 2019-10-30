@@ -321,7 +321,7 @@ begin
     else;
 end
 
-assign ofifo_din = {duc_qdata_cut,duc_idata_cut};
+assign ofifo_din = {duc_idata_cut,duc_qdata_cut};
 
 
 always @ (posedge clk_25d6m or negedge rst_n )
