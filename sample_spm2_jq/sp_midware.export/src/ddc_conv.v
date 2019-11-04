@@ -72,6 +72,17 @@ wire    [31:0]                      mult_qdata;
 wire    [31:0]                      mult_idata;
 wire    [15:0]                      midband_idata;
 (* MARK_DEBUG="true" *)
+wire                                fir_dec_valid;
+(* MARK_DEBUG="true" *)
+wire    [39:0]                      fir_dec_idata;
+(* MARK_DEBUG="true" *)
+wire    [39:0]                      fir_dec_qdata;
+(* MARK_DEBUG="true" *)
+wire    [47:0]                      cic_idata;
+(* MARK_DEBUG="true" *)
+wire                                cic_valid;
+wire    [47:0]                      cic_qdata;
+(* MARK_DEBUG="true" *)
 wire    [15:0]                      midband_qdata;
 wire                                ddc_fir_ivalid;
 wire    [47:0]                      ddc_fir_idata;
@@ -79,6 +90,8 @@ wire                                ddc_fir_qvalid;
 wire    [47:0]                      ddc_fir_qdata;
 (* MARK_DEBUG="true" *)
 wire                                ram_wen;
+(* MARK_DEBUG="true" *)
+wire                                fir_dec_ready;
 
 assign ififo_wen = axis_tvalid & ififo_wen_enb & axis_tready;
 assign ififo_din = axis_tdata;
@@ -178,15 +191,16 @@ u1_fir_lpm_4d2m(
     .m_axis_data_tdata          (ddc_fir_qdata              )
 );
 
-dds_clken #(
-    .U_DLY                      (U_DLY                      )
-)
-u_dds_clken(
-    .clk                        (clk_25d6m                  ),
-    .rst_n                      (rst_n                      ),
-    .fw                         (FW_CLKEN_160K              ),
-    .enb                        (ram_wen                    )
-);
+//dds_clken #(
+//    .U_DLY                      (U_DLY                      )
+//)
+//u_dds_clken(
+//    .clk                        (clk_25d6m                  ),
+//    .rst_n                      (rst_n                      ),
+//    .fw                         (FW_CLKEN_160K              ),
+//    .enb                        (ram_wen                    )
+//);
+
 
 always @ (posedge clk_25d6m or negedge rst_n )
 begin
@@ -230,16 +244,61 @@ begin
     else;
 end
 
+
+
+
+
+//fir_dec_idata[34:19]
+cic_compiler_20d
+u0_cic_compiler(
+    .aclk                       (clk_25d6m                  ),
+    .s_axis_data_tdata          (ddc_fir_idata_cut       ),
+    .s_axis_data_tvalid         (1'b1                       ),
+    .s_axis_data_tready         (                           ),
+    .m_axis_data_tdata          (cic_idata                  ),
+    .m_axis_data_tvalid         (cic_valid                  )
+);
+
+cic_compiler_20d
+u1_cic_compiler(
+    .aclk                       (clk_25d6m                  ),
+    .s_axis_data_tdata          (ddc_fir_qdata_cut          ),
+    .s_axis_data_tvalid         (1'b1                       ),
+    .s_axis_data_tready         (                           ),
+    .m_axis_data_tdata          (cic_qdata                  ),
+    .m_axis_data_tvalid         (                           )
+);
+
+fir_lpf_dec8
+u0_fir_lpf_dec8(
+    .aclk                       (clk_25d6m                  ),
+    .s_axis_data_tvalid         (cic_valid                  ),
+    .s_axis_data_tready         (fir_dec_ready              ),
+    .s_axis_data_tdata          (cic_idata[41:26]           ),
+    .m_axis_data_tvalid         (fir_dec_valid              ),
+    .m_axis_data_tdata          (fir_dec_idata              )
+);
+
+fir_lpf_dec8
+u1_fir_lpf_dec8(
+    .aclk                       (clk_25d6m                  ),
+    .s_axis_data_tvalid         (1'b1                       ),
+    .s_axis_data_tready         (                           ),
+    .s_axis_data_tdata          (cic_qdata[41:26]           ),
+    .m_axis_data_tvalid         (                           ),
+    .m_axis_data_tdata          (fir_dec_qdata              )
+);
 sdpram_d12kw32
 u_ram(
-    .clka                       (clk_25d6m                  ),    // input wire clka
-    .wea                        (ram_wen                    ),      // input wire [0 : 0] wea
-    .addra                      (ram_waddr                  ),  // input wire [13 : 0] addra
-    .dina                       ({ddc_fir_idata_cut,ddc_fir_qdata_cut}),  // input wire [31 : 0] dina
-    .clkb                       (lbs_clk                    ),    // input wire clkb
-    .addrb                      (lbs_addr                   ),  // input wire [13 : 0] addrb
-    .doutb                      (ddc_conv_data              )   // output wire [31 : 0] doutb
+    .clka                       (clk_25d6m                  ),
+    .wea                        (ram_wen                    ),
+    .addra                      (ram_waddr                  ),
+    .dina                       ({fir_dec_idata[34:19],fir_dec_qdata[34:19]}),
+    .clkb                       (lbs_clk                    ),
+    .addrb                      (lbs_addr                   ),
+    .doutb                      (ddc_conv_data              )
 );
+assign ram_wen = fir_dec_valid;
 
 // synchronized WADDR
 always @ (posedge lbs_clk or negedge rst_n )

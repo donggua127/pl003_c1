@@ -50,7 +50,7 @@ output  reg                         led_pulse
 // Register Define
 reg                                 tx_chn_sel;
 reg                                 rx_chn_sel;
-reg     [3:0]                       led_cnt;
+reg     [9:0]                       led_cnt;
 reg     [1:0]                       rx_chn_sel_sync;
 reg     [1:0]                       tx_chn_sel_sync;
 
@@ -183,14 +183,14 @@ begin
 
             if(lbs_we == 1'b1 && lbs_addr == 16'd16003 && lbs_din == 32'h0000_5555)
                 led_pulse <= #U_DLY 1'b1;
-            else if(led_cnt == 4'd0)
+            else if(led_cnt == 10'd0)
                 led_pulse <= #U_DLY 1'b0;
             else;
 
-            if(led_pulse == 1'b1)
-                led_cnt <= #U_DLY 4'd9;
-            else if(led_cnt > 4'd0)
-                led_cnt <= #U_DLY led_cnt - 4'd1;
+            if(lbs_we == 1'b1 && lbs_addr == 16'd16003 && lbs_din == 32'h0000_5555)
+                led_cnt <= #U_DLY 10'd999;
+            else if(led_cnt > 10'd0)
+                led_cnt <= #U_DLY led_cnt - 10'd1;
             else;
         end
 end
