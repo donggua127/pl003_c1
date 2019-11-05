@@ -51,8 +51,6 @@ localparam                          CMD_DOWN_TRIG = 32'h0000_FFFF;
 
 // Register Define
 reg     [7:0]                       tcnt;
-reg     [15:0]                      ram_idata;
-reg     [15:0]                      ram_qdata;
 (* MARK_DEBUG="true" *)
 reg                                 down_start;
 (* MARK_DEBUG="true" *)
@@ -82,8 +80,14 @@ reg     [15:0]                      duc_qdata_cut;
 reg     [15:0]                      baseband_idata;
 (* MARK_DEBUG="true" *)
 reg     [15:0]                      baseband_qdata;
-reg [3:0] sync_rst;
-reg send_flag_1dly;
+reg     [3:0]                       sync_rst;
+reg                                 send_flag_1dly;
+reg     [6:0]                       cnt_us;
+reg                                 pulse_us;
+(* MARK_DEBUG="true" *)
+reg     [19:0]                      cnt_trig;
+(* MARK_DEBUG="true" *)
+reg     [19:0]                      cnt_send;
 
 // Wire Define
 wire    [31:0]                      duc_idata;
@@ -107,26 +111,22 @@ wire                                fir_ivalid;
 wire    [31:0]                      fir_idata;
 wire                                fir_qvalid;
 wire    [31:0]                      fir_qdata;
-wire rd_en;
-wire [31:0] fifo_ram_data;
-wire full;
-wire empty;
-wire fir_iready;
-wire fir_qready;
-wire [15:0] fir_idin;
-wire [15:0] fir_qdin;
-wire [31:0] duc_idata_tmp;
-wire [31:0] duc_qdata_tmp;
+wire                                rd_en;
+wire    [31:0]                      fifo_ram_data;
+wire                                full;
+wire                                empty;
+wire                                fir_iready;
+wire                                fir_qready;
+wire    [15:0]                      fir_idin;
+wire    [15:0]                      fir_qdin;
+wire    [31:0]                      duc_idata_tmp;
+wire    [31:0]                      duc_qdata_tmp;
+wire    [15:0]                      fir_idata_cut;
+wire    [15:0]                      fir_qdata_cut;
 (* MARK_DEBUG="true" *)
-wire [15:0] duc_add_idata;
+wire    [15:0]                      duc_add_idata;
 (* MARK_DEBUG="true" *)
-wire [15:0] duc_add_qdata;
-reg [6:0] cnt_us;
-reg       pulse_us;
-(* MARK_DEBUG="true" *)
-reg [19:0] cnt_trig;
-(* MARK_DEBUG="true" *)
-reg [19:0] cnt_send;
+wire    [15:0]                      duc_add_qdata;
 
 assign duc_cmd_register = cmd_register;
 
@@ -207,7 +207,7 @@ begin
                 pulse_us <= #U_DLY 1'b1;
             else
                 pulse_us <= #U_DLY 1'b0;
-            
+
             if(down_trig == 1'b1)
                 cnt_trig <= #U_DLY 20'd0;
             else if(pulse_us == 1'b1)
@@ -275,8 +275,7 @@ begin
             send_end <= 1'b0;
             baseband_idata <= 16'd0;
             baseband_qdata <= 16'd0;
-            ram_idata <= 16'd3000;
-            ram_qdata <= 16'd3000;
+
             send_flag_1dly <= 1'b0;
         end
     else
@@ -308,23 +307,13 @@ begin
                 ram_raddr <= #U_DLY 12'd0;
             else;
 
-            if(send_flag == 1'b1)
-                ram_idata <= #U_DLY ram_dout[31:16];
-            else
-                ram_idata <= #U_DLY 16'd3000;
-
-            if(send_flag == 1'b1)
-                ram_qdata <= #U_DLY ram_dout[15:0];
-            else
-                ram_qdata <= #U_DLY 16'd3000;
-
             if(cic_valid == 1'b1)
-                baseband_idata <= #U_DLY cic_idata[37:22];
+                baseband_idata <= #U_DLY {cic_idata[37:22]};
             else
                 baseband_idata <= #U_DLY 16'd3000;
 
             if(cic_valid == 1'b1)
-                baseband_qdata <= #U_DLY cic_qdata[37:22];
+                baseband_qdata <= #U_DLY {cic_qdata[37:22]};
             else
                 baseband_qdata <= #U_DLY 16'd3000;
         end
@@ -355,6 +344,7 @@ cfwft_4kd32 u_cfwft_d4kw32 (
 assign rd_en = (fir_iready & fir_qready) & (~empty);
 assign fir_idin = (~empty) ? fifo_ram_data[31:16] : 16'd3000;
 assign fir_qdin = (~empty) ? fifo_ram_data[15:0] : 16'd3000;
+
 fir_lpf_insert8
 u0_fir_lpm_insert8(
     .aclk                       (clk_25d6m                  ),
@@ -375,12 +365,15 @@ u1_fir_lpm_insert8(
     .m_axis_data_tdata          (fir_qdata                  )
 );
 
+assign fir_idata_cut = {fir_idata[31:16]};
+assign fir_qdata_cut = {fir_qdata[31:16]};
+
 cic_compiler_160r
 u0_cic_compiler(
     .aclk                       (clk_25d6m                  ),                              // input wire aclk
-    .s_axis_data_tdata          (fir_idata[31:16]           ),    // input wire [15 : 0] s_axis_data_tdata
-    .s_axis_data_tvalid         (1'b1                       ),  // input wire s_axis_data_tvalid
-    .s_axis_data_tready         (                           ),  // output wire s_axis_data_tready
+    .s_axis_data_tdata          (fir_idata_cut              ),    // input wire [15 : 0] s_axis_data_tdata
+    .s_axis_data_tvalid         (fir_ivalid                 ),  // input wire s_axis_data_tvalid
+    .s_axis_data_tready         (/*not used*/               ),  // output wire s_axis_data_tready
     .m_axis_data_tdata          (cic_idata                  ),    // output wire [31 : 0] m_axis_data_tdata
     .m_axis_data_tvalid         (cic_valid                  )    // output wire m_axis_data_tvalid
 );
@@ -389,9 +382,9 @@ u0_cic_compiler(
 cic_compiler_160r
 u1_cic_compiler(
     .aclk                       (clk_25d6m                  ),                              // input wire aclk
-    .s_axis_data_tdata          (fir_qdata[31:16]           ),    // input wire [15 : 0] s_axis_data_tdata
-    .s_axis_data_tvalid         (1'b1                       ),  // input wire s_axis_data_tvalid
-    .s_axis_data_tready         (                            ),  // output wire s_axis_data_tready
+    .s_axis_data_tdata          (fir_qdata_cut              ),    // input wire [15 : 0] s_axis_data_tdata
+    .s_axis_data_tvalid         (fir_qvalid                 ),  // input wire s_axis_data_tvalid
+    .s_axis_data_tready         (/*not used*/               ),  // output wire s_axis_data_tready
     .m_axis_data_tdata          (cic_qdata                  ),    // output wire [31 : 0] m_axis_data_tdata
     .m_axis_data_tvalid         (/*not used*/               )    // output wire m_axis_data_tvalid
 );
@@ -414,10 +407,10 @@ u1_mult_signed(
 
 add_s16
 u0_add_s16(
-    .CLK(clk_25d6m),
-    .A(duc_idata[31:16]),
-    .B(duc_qdata[31:16]),
-    .S(duc_add_idata)
+    .CLK                        (clk_25d6m                  ),
+    .A                          ({duc_idata[31],duc_idata[29:15]}),
+    .B                          ({duc_qdata[31],duc_qdata[29:15]}),
+    .S                          (duc_add_idata              )
 );
 
 mult_signed
@@ -438,10 +431,10 @@ u3_mult_signed(
 
 add_s16
 u1_add_s16(
-    .CLK(clk_25d6m),
-    .A(duc_idata_tmp[31:16]),
-    .B(duc_qdata_tmp[31:16]),
-    .S(duc_add_qdata)
+    .CLK                        (clk_25d6m                  ),
+    .A                          ({duc_idata_tmp[31],duc_idata_tmp[29:15]}),
+    .B                          ({duc_qdata_tmp[31],duc_qdata_tmp[29:15]}),
+    .S                          (duc_add_qdata              )
 );
 
 assign ofifo_din = {duc_add_idata,duc_add_qdata};

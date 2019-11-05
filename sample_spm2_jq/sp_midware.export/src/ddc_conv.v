@@ -20,11 +20,8 @@ parameter                           U_DLY = 1
 )(
 input                               rst_n,
 input                               axis_clk,
-(* MARK_DEBUG="true" *)
 output  wire                        axis_tready,
-(* MARK_DEBUG="true" *)
 input                               axis_tvalid,
-(* MARK_DEBUG="true" *)
 input           [31:0]              axis_tdata,
 input                               axis_tlast,
 input                               clk_25d6m,
@@ -33,7 +30,6 @@ input           [15:0]              lo_cos,
 input                               lbs_clk,
 input           [13:0]              lbs_addr,
 output  wire    [31:0]              ddc_conv_data,
-(* MARK_DEBUG="true" *)
 output  reg     [13:0]              ddc_conv_waddr
 );
 // Parameter Define
@@ -41,7 +37,7 @@ output  reg     [13:0]              ddc_conv_waddr
 //96k : 16106127
 localparam                          FW_CLKEN_160K = 32'd26843546;
 localparam                          FW_CLKEN_96K = 32'd16106127;
-localparam                          MAX_ADDR = 14'd11520;
+localparam                          MAX_ADDR = 14'd11519;
 
 
 // Register Define
@@ -56,10 +52,6 @@ reg     [13:0]                      ram_waddr;
 reg                                 ififo_wen_enb;
 reg     [31:0]                      mult_idata_cut;
 reg     [31:0]                      mult_qdata_cut;
-(* MARK_DEBUG="true" *)
-reg     [15:0]                      ddc_fir_idata_cut;
-(* MARK_DEBUG="true" *)
-reg     [15:0]                      ddc_fir_qdata_cut;
 
 // Wire Define
 wire                                ififo_wen;
@@ -72,15 +64,20 @@ wire    [31:0]                      mult_qdata;
 wire    [31:0]                      mult_idata;
 wire    [15:0]                      midband_idata;
 (* MARK_DEBUG="true" *)
+wire    [15:0]                      fir_dec_idata_cut;
+(* MARK_DEBUG="true" *)
+wire    [15:0]                      fir_dec_qdata_cut;
+(* MARK_DEBUG="true" *)
+wire    [15:0]                      cic_idata_cut;
+wire    [15:0]                      cic_qdata_cut;
+(* MARK_DEBUG="true" *)
+wire                                cic_ivalid;
+wire                                cic_qvalid;
+(* MARK_DEBUG="true" *)
 wire                                fir_dec_valid;
-(* MARK_DEBUG="true" *)
 wire    [39:0]                      fir_dec_idata;
-(* MARK_DEBUG="true" *)
 wire    [39:0]                      fir_dec_qdata;
-(* MARK_DEBUG="true" *)
 wire    [47:0]                      cic_idata;
-(* MARK_DEBUG="true" *)
-wire                                cic_valid;
 wire    [47:0]                      cic_qdata;
 (* MARK_DEBUG="true" *)
 wire    [15:0]                      midband_qdata;
@@ -88,10 +85,11 @@ wire                                ddc_fir_ivalid;
 wire    [47:0]                      ddc_fir_idata;
 wire                                ddc_fir_qvalid;
 wire    [47:0]                      ddc_fir_qdata;
-(* MARK_DEBUG="true" *)
 wire                                ram_wen;
 (* MARK_DEBUG="true" *)
-wire                                fir_dec_ready;
+wire    [15:0]                      ddc_fir_idata_cut;
+(* MARK_DEBUG="true" *)
+wire    [15:0]                      ddc_fir_qdata_cut;
 
 assign ififo_wen = axis_tvalid & ififo_wen_enb & axis_tready;
 assign ififo_din = axis_tdata;
@@ -226,55 +224,41 @@ begin
         end
 end
 
-always @(posedge clk_25d6m)
-begin
-    if(ddc_fir_idata[47:46] == 2'b00 || ddc_fir_idata[47:46] == 2'b11)
-        ddc_fir_idata_cut <= #U_DLY {ddc_fir_idata[47],ddc_fir_idata[45:31]};
-    else if(ddc_fir_idata[47:46] == 2'b01)
-        ddc_fir_idata_cut <= #U_DLY {ddc_fir_idata[47],15'h7fff};
-    else if(ddc_fir_idata[47:46] == 2'b10)
-        ddc_fir_idata_cut <= #U_DLY {ddc_fir_idata[47],15'd0};
-    else;
-    if(ddc_fir_qdata[47:46] == 2'b00 || ddc_fir_qdata[47:46] == 2'b11)
-        ddc_fir_qdata_cut <= #U_DLY {ddc_fir_qdata[47],ddc_fir_qdata[45:31]};
-    else if(ddc_fir_qdata[47:46] == 2'b01)
-        ddc_fir_qdata_cut <= #U_DLY {ddc_fir_qdata[47],15'h7fff};
-    else if(ddc_fir_qdata[47:46] == 2'b10)
-        ddc_fir_qdata_cut <= #U_DLY {ddc_fir_qdata[47],15'd0};
-    else;
-end
 
-
-
+assign ddc_fir_idata_cut = {ddc_fir_idata[47:32]};
+assign ddc_fir_qdata_cut = {ddc_fir_qdata[47:32]};
 
 
 //fir_dec_idata[34:19]
 cic_compiler_20d
 u0_cic_compiler(
     .aclk                       (clk_25d6m                  ),
-    .s_axis_data_tdata          (ddc_fir_idata_cut       ),
-    .s_axis_data_tvalid         (1'b1                       ),
-    .s_axis_data_tready         (                           ),
+    .s_axis_data_tdata          (ddc_fir_idata_cut          ),
+    .s_axis_data_tvalid         (ddc_fir_ivalid             ),
+    .s_axis_data_tready         (/*not used*/               ),
     .m_axis_data_tdata          (cic_idata                  ),
-    .m_axis_data_tvalid         (cic_valid                  )
+    .m_axis_data_tvalid         (cic_ivalid                 )
 );
 
 cic_compiler_20d
 u1_cic_compiler(
     .aclk                       (clk_25d6m                  ),
     .s_axis_data_tdata          (ddc_fir_qdata_cut          ),
-    .s_axis_data_tvalid         (1'b1                       ),
-    .s_axis_data_tready         (                           ),
+    .s_axis_data_tvalid         (ddc_fir_qvalid             ),
+    .s_axis_data_tready         (/*not used*/               ),
     .m_axis_data_tdata          (cic_qdata                  ),
-    .m_axis_data_tvalid         (                           )
+    .m_axis_data_tvalid         (cic_qvalid                 )
 );
+
+assign cic_idata_cut = {cic_idata[41:26]};
+assign cic_qdata_cut = {cic_qdata[41:26]};
 
 fir_lpf_dec8
 u0_fir_lpf_dec8(
     .aclk                       (clk_25d6m                  ),
-    .s_axis_data_tvalid         (cic_valid                  ),
-    .s_axis_data_tready         (fir_dec_ready              ),
-    .s_axis_data_tdata          (cic_idata[41:26]           ),
+    .s_axis_data_tvalid         (cic_ivalid                 ),
+    .s_axis_data_tready         (/*not used*/               ),
+    .s_axis_data_tdata          (cic_idata_cut              ),
     .m_axis_data_tvalid         (fir_dec_valid              ),
     .m_axis_data_tdata          (fir_dec_idata              )
 );
@@ -282,18 +266,21 @@ u0_fir_lpf_dec8(
 fir_lpf_dec8
 u1_fir_lpf_dec8(
     .aclk                       (clk_25d6m                  ),
-    .s_axis_data_tvalid         (1'b1                       ),
-    .s_axis_data_tready         (                           ),
-    .s_axis_data_tdata          (cic_qdata[41:26]           ),
-    .m_axis_data_tvalid         (                           ),
+    .s_axis_data_tvalid         (cic_qvalid                 ),
+    .s_axis_data_tready         (/*not used*/               ),
+    .s_axis_data_tdata          (cic_qdata_cut              ),
+    .m_axis_data_tvalid         (/*not used*/               ),
     .m_axis_data_tdata          (fir_dec_qdata              )
 );
+
+assign fir_dec_idata_cut = {fir_dec_idata[34:19]};
+assign fir_dec_qdata_cut = {fir_dec_qdata[34:19]};
 sdpram_d12kw32
 u_ram(
     .clka                       (clk_25d6m                  ),
     .wea                        (ram_wen                    ),
     .addra                      (ram_waddr                  ),
-    .dina                       ({fir_dec_idata[34:19],fir_dec_qdata[34:19]}),
+    .dina                       ({fir_dec_idata_cut,fir_dec_qdata_cut}),
     .clkb                       (lbs_clk                    ),
     .addrb                      (lbs_addr                   ),
     .doutb                      (ddc_conv_data              )

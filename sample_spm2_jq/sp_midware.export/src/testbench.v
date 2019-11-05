@@ -27,11 +27,12 @@ localparam                          AXIS_CLK_HALF_PERIOD_NS = 1000000000.0/AXIS_
 reg                                 rst_n;
 reg                                 lbs_clk;
 reg                                 axis_clk;
-reg     [15:0]                      lbs_addr;
+reg     [13:0]                      lbs_addr;
 reg     [31:0]                      lbs_din;
 reg                                 lbs_we;
 reg                                 lbs_re;
-reg     [15:0]                      duc_base_data[2303:0];
+reg     [15:0]                      duc_base_idata[0:3839];
+reg     [15:0]                      duc_base_qdata[0:3839];
 
 // Wire Define
 wire                                axis_tx_tready;
@@ -69,7 +70,8 @@ end
 
 initial
 begin
-    $readmemh("f:/testdata.txt", duc_base_data);
+    $readmemh("F:/fpga_prj/pl003_c1/sample_spm2_jq/sp_midware.export/src/testdata.txt", duc_base_idata,0,3839);
+    $readmemh("F:/fpga_prj/pl003_c1/sample_spm2_jq/sp_midware.export/src/testqdata.txt", duc_base_qdata,0,3839);
 end
 
 integer i;
@@ -82,9 +84,9 @@ begin
     wait(rst_n == 1'b1);
     #18000;
     lbs_write(16'd16000,32'h0000_5555);
-    for(i=0;i<2304;i=i+1)
+    for(i=0;i<3840;i=i+1)
         begin
-            lbs_write(16'd12000+i,{duc_base_data[i],duc_base_data[i]});
+            lbs_write(16'd12000+i,{duc_base_idata[i],duc_base_qdata[i]});
         end
     lbs_write(16'd16000,32'h0000_8888);
 

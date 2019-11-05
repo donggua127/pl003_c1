@@ -20,7 +20,7 @@ parameter                           U_DLY = 1
 )(
 input                               rst_n,
 input                               lbs_clk,
-input           [15:0]              lbs_addr,
+input           [13:0]              lbs_addr,
 input           [31:0]              lbs_din,
 output  reg     [31:0]              lbs_dout,
 input                               lbs_we,
@@ -205,7 +205,7 @@ begin
                 lbs_dout <= #U_DLY ddc_conv_data;   //
             else if(lbs_addr == 16'd11521)
                 lbs_dout <= #U_DLY {18'd0,ddc_conv_waddr};
-            else if(lbs_addr >= 16'd12000 && lbs_addr <= 16'd14304)
+            else if(lbs_addr >= 16'd12000 && lbs_addr <= 16'd15380)
                 lbs_dout <= #U_DLY duc_base_data;
             else if(lbs_addr == 16'd16000)
                 lbs_dout <= #U_DLY duc_cmd_register;

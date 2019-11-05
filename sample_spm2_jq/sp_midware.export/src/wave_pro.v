@@ -63,12 +63,12 @@ reg                                 cpu_we_dly;
 reg                                 cpu_rd_dly;
 
 // Wire Define
-wire    [15:0]                      lbs_addr;
+(* MARK_DEBUG="true" *)
+wire    [13:0]                      lbs_addr;
 wire    [31:0]                      lbs_din;
 wire    [31:0]                      lbs_dout;
 wire                                lbs_we;
 wire                                lbs_re;
-(* MARK_DEBUG="true" *)
 wire    [15:0]                      cpu_addr;
 (* MARK_DEBUG="true" *)
 wire                                cpu_cs;
@@ -114,7 +114,7 @@ u_axi4_lite(
     .cpu_rdata                  (cpu_rdata                  )
 );
 
-assign lbs_addr = {2'd0,cpu_addr[15:2]};
+assign lbs_addr = cpu_addr[15:2];
 assign lbs_din = cpu_wdata;
 assign cpu_rdata = lbs_dout;
 always @(posedge axi4_lite_clk or negedge rst_n)

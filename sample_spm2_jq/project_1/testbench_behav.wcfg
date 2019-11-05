@@ -12,17 +12,17 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="349309062001fs"></ZoomEndTime>
-      <Cursor1Time time="127959597000fs"></Cursor1Time>
+      <ZoomEndTime time="992239624700fs"></ZoomEndTime>
+      <Cursor1Time time="528762187000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="244"></NameColumnWidth>
-      <ValueColumnWidth column_width="110"></ValueColumnWidth>
+      <ValueColumnWidth column_width="106"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="69" />
+   <WVObjectSize size="81" />
    <wave_markers>
-      <marker time="77904620000" label="" />
       <marker time="144000000000" label="" />
+      <marker time="83312187000" label="" />
    </wave_markers>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/rst_n" type="logic">
       <obj_property name="ElementShortName">rst_n</obj_property>
@@ -32,29 +32,102 @@
       <obj_property name="ElementShortName">lbs_clk</obj_property>
       <obj_property name="ObjectShortName">lbs_clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_addr" type="array">
-      <obj_property name="ElementShortName">lbs_addr[13:0]</obj_property>
-      <obj_property name="ObjectShortName">lbs_addr[13:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din" type="array">
-      <obj_property name="ElementShortName">lbs_din[31:0]</obj_property>
-      <obj_property name="ObjectShortName">lbs_din[31:0]</obj_property>
-   </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_we" type="logic">
       <obj_property name="ElementShortName">lbs_we</obj_property>
       <obj_property name="ObjectShortName">lbs_we</obj_property>
    </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_addr" type="array">
+      <obj_property name="ElementShortName">lbs_addr[13:0]</obj_property>
+      <obj_property name="ObjectShortName">lbs_addr[13:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din" type="array">
+      <obj_property name="ElementShortName">lbs_din[31:0]</obj_property>
+      <obj_property name="ObjectShortName">lbs_din[31:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="vbus367" type="vbus">
+      <obj_property name="label">New Virtual Bus 3</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[31]" type="logic">
+         <obj_property name="ElementShortName">[31]</obj_property>
+         <obj_property name="ObjectShortName">[31]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[30]" type="logic">
+         <obj_property name="ElementShortName">[30]</obj_property>
+         <obj_property name="ObjectShortName">[30]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[29]" type="logic">
+         <obj_property name="ElementShortName">[29]</obj_property>
+         <obj_property name="ObjectShortName">[29]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[28]" type="logic">
+         <obj_property name="ElementShortName">[28]</obj_property>
+         <obj_property name="ObjectShortName">[28]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[27]" type="logic">
+         <obj_property name="ElementShortName">[27]</obj_property>
+         <obj_property name="ObjectShortName">[27]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[26]" type="logic">
+         <obj_property name="ElementShortName">[26]</obj_property>
+         <obj_property name="ObjectShortName">[26]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[25]" type="logic">
+         <obj_property name="ElementShortName">[25]</obj_property>
+         <obj_property name="ObjectShortName">[25]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[24]" type="logic">
+         <obj_property name="ElementShortName">[24]</obj_property>
+         <obj_property name="ObjectShortName">[24]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[23]" type="logic">
+         <obj_property name="ElementShortName">[23]</obj_property>
+         <obj_property name="ObjectShortName">[23]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[22]" type="logic">
+         <obj_property name="ElementShortName">[22]</obj_property>
+         <obj_property name="ObjectShortName">[22]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[21]" type="logic">
+         <obj_property name="ElementShortName">[21]</obj_property>
+         <obj_property name="ObjectShortName">[21]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[20]" type="logic">
+         <obj_property name="ElementShortName">[20]</obj_property>
+         <obj_property name="ObjectShortName">[20]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[19]" type="logic">
+         <obj_property name="ElementShortName">[19]</obj_property>
+         <obj_property name="ObjectShortName">[19]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[18]" type="logic">
+         <obj_property name="ElementShortName">[18]</obj_property>
+         <obj_property name="ObjectShortName">[18]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[17]" type="logic">
+         <obj_property name="ElementShortName">[17]</obj_property>
+         <obj_property name="ObjectShortName">[17]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lbs_din[16]" type="logic">
+         <obj_property name="ElementShortName">[16]</obj_property>
+         <obj_property name="ObjectShortName">[16]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/clk_25d6m" type="logic">
+      <obj_property name="ElementShortName">clk_25d6m</obj_property>
+      <obj_property name="ObjectShortName">clk_25d6m</obj_property>
+   </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lo_sin" type="array">
       <obj_property name="ElementShortName">lo_sin[15:0]</obj_property>
       <obj_property name="ObjectShortName">lo_sin[15:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/lo_cos" type="array">
       <obj_property name="ElementShortName">lo_cos[15:0]</obj_property>
       <obj_property name="ObjectShortName">lo_cos[15:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/axis_clk" type="logic">
       <obj_property name="ElementShortName">axis_clk</obj_property>
@@ -108,6 +181,10 @@
       <obj_property name="ElementShortName">start_send</obj_property>
       <obj_property name="ObjectShortName">start_send</obj_property>
    </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/send_end_sync" type="array">
+      <obj_property name="ElementShortName">send_end_sync[2:0]</obj_property>
+      <obj_property name="ObjectShortName">send_end_sync[2:0]</obj_property>
+   </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/start_send_sync" type="array">
       <obj_property name="ElementShortName">start_send_sync[2:0]</obj_property>
       <obj_property name="ObjectShortName">start_send_sync[2:0]</obj_property>
@@ -115,26 +192,6 @@
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/send_flag" type="logic">
       <obj_property name="ElementShortName">send_flag</obj_property>
       <obj_property name="ObjectShortName">send_flag</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/clk_25d6m" type="logic">
-      <obj_property name="ElementShortName">clk_25d6m</obj_property>
-      <obj_property name="ObjectShortName">clk_25d6m</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/ram_raddr" type="array">
-      <obj_property name="ElementShortName">ram_raddr[11:0]</obj_property>
-      <obj_property name="ObjectShortName">ram_raddr[11:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/ram_dout" type="array">
-      <obj_property name="ElementShortName">ram_dout[31:0]</obj_property>
-      <obj_property name="ObjectShortName">ram_dout[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/send_ready" type="logic">
-      <obj_property name="ElementShortName">send_ready</obj_property>
-      <obj_property name="ObjectShortName">send_ready</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/send_end_sync" type="array">
-      <obj_property name="ElementShortName">send_end_sync[2:0]</obj_property>
-      <obj_property name="ObjectShortName">send_end_sync[2:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/send_flag_dly" type="logic">
       <obj_property name="ElementShortName">send_flag_dly</obj_property>
@@ -155,6 +212,8 @@
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/ram_din" type="array">
       <obj_property name="ElementShortName">ram_din[31:0]</obj_property>
       <obj_property name="ObjectShortName">ram_din[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/cmd_register" type="array">
       <obj_property name="ElementShortName">cmd_register[31:0]</obj_property>
@@ -175,25 +234,41 @@
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/duc_idata_cut" type="array">
       <obj_property name="ElementShortName">duc_idata_cut[15:0]</obj_property>
       <obj_property name="ObjectShortName">duc_idata_cut[15:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/duc_qdata_cut" type="array">
       <obj_property name="ElementShortName">duc_qdata_cut[15:0]</obj_property>
       <obj_property name="ObjectShortName">duc_qdata_cut[15:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/baseband_idata" type="array">
       <obj_property name="ElementShortName">baseband_idata[15:0]</obj_property>
       <obj_property name="ObjectShortName">baseband_idata[15:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/baseband_qdata" type="array">
       <obj_property name="ElementShortName">baseband_qdata[15:0]</obj_property>
       <obj_property name="ObjectShortName">baseband_qdata[15:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/sync_rst" type="array">
+      <obj_property name="ElementShortName">sync_rst[3:0]</obj_property>
+      <obj_property name="ObjectShortName">sync_rst[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/cnt_us" type="array">
+      <obj_property name="ElementShortName">cnt_us[6:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt_us[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/pulse_us" type="logic">
+      <obj_property name="ElementShortName">pulse_us</obj_property>
+      <obj_property name="ObjectShortName">pulse_us</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/cnt_trig" type="array">
+      <obj_property name="ElementShortName">cnt_trig[19:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt_trig[19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/cnt_send" type="array">
+      <obj_property name="ElementShortName">cnt_send[19:0]</obj_property>
+      <obj_property name="ObjectShortName">cnt_send[19:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/duc_idata" type="array">
       <obj_property name="ElementShortName">duc_idata[31:0]</obj_property>
@@ -206,6 +281,25 @@
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/ram_douta" type="array">
       <obj_property name="ElementShortName">ram_douta[31:0]</obj_property>
       <obj_property name="ObjectShortName">ram_douta[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/send_flag_1dly" type="logic">
+      <obj_property name="ElementShortName">send_flag_1dly</obj_property>
+      <obj_property name="ObjectShortName">send_flag_1dly</obj_property>
+      <obj_property name="CustomSignalColor">#FF0000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/ram_raddr" type="array">
+      <obj_property name="ElementShortName">ram_raddr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">ram_raddr[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/ram_dout" type="array">
+      <obj_property name="ElementShortName">ram_dout[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ram_dout[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FF0000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/clk_enb" type="logic">
       <obj_property name="ElementShortName">clk_enb</obj_property>
@@ -244,71 +338,187 @@
       <obj_property name="ObjectShortName">send_qready</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/cic_idata" type="array">
-      <obj_property name="ElementShortName">cic_idata[31:0]</obj_property>
-      <obj_property name="ObjectShortName">cic_idata[31:0]</obj_property>
+      <obj_property name="ElementShortName">cic_idata[39:0]</obj_property>
+      <obj_property name="ObjectShortName">cic_idata[39:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="AnalogYRangeMin">-1055000000000.000000</obj_property>
+      <obj_property name="AnalogYRRangeMax">18118900000000.000000</obj_property>
+      <obj_property name="AnalogInterpolation">ANALOG_INTERPOLATION_LINEAR</obj_property>
+      <obj_property name="AnalogOffscale">ANALOG_OFFSCALE_HIDE</obj_property>
+      <obj_property name="AnalogHorizLine">0.000000</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/cic_valid" type="logic">
       <obj_property name="ElementShortName">cic_valid</obj_property>
       <obj_property name="ObjectShortName">cic_valid</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/cic_qdata" type="array">
-      <obj_property name="ElementShortName">cic_qdata[31:0]</obj_property>
-      <obj_property name="ObjectShortName">cic_qdata[31:0]</obj_property>
+      <obj_property name="ElementShortName">cic_qdata[39:0]</obj_property>
+      <obj_property name="ObjectShortName">cic_qdata[39:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/U_DLY" type="array">
-      <obj_property name="ElementShortName">U_DLY[31:0]</obj_property>
-      <obj_property name="ObjectShortName">U_DLY[31:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/send_ready" type="logic">
+      <obj_property name="ElementShortName">send_ready</obj_property>
+      <obj_property name="ObjectShortName">send_ready</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/SAMPLE_RATE_SEL" type="array">
-      <obj_property name="ElementShortName">SAMPLE_RATE_SEL[31:0]</obj_property>
-      <obj_property name="ObjectShortName">SAMPLE_RATE_SEL[31:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_idata" type="array">
+      <obj_property name="ElementShortName">fir_idata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">fir_idata[31:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/FW_CLKEN_160K" type="array">
-      <obj_property name="ElementShortName">FW_CLKEN_160K[31:0]</obj_property>
-      <obj_property name="ObjectShortName">FW_CLKEN_160K[31:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qvalid" type="logic">
+      <obj_property name="ElementShortName">fir_qvalid</obj_property>
+      <obj_property name="ObjectShortName">fir_qvalid</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/FW_CLKEN_96K" type="array">
-      <obj_property name="ElementShortName">FW_CLKEN_96K[31:0]</obj_property>
-      <obj_property name="ObjectShortName">FW_CLKEN_96K[31:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata" type="array">
+      <obj_property name="ElementShortName">fir_qdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">fir_qdata[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/FW_CLKEN" type="array">
-      <obj_property name="ElementShortName">FW_CLKEN[31:0]</obj_property>
-      <obj_property name="ObjectShortName">FW_CLKEN[31:0]</obj_property>
+   <wvobject fp_name="vbus302" type="vbus">
+      <obj_property name="label">fir_test</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_DIGITAL</obj_property>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[30]" type="logic">
+         <obj_property name="ElementShortName">[30]</obj_property>
+         <obj_property name="ObjectShortName">[30]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[29]" type="logic">
+         <obj_property name="ElementShortName">[29]</obj_property>
+         <obj_property name="ObjectShortName">[29]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[28]" type="logic">
+         <obj_property name="ElementShortName">[28]</obj_property>
+         <obj_property name="ObjectShortName">[28]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[27]" type="logic">
+         <obj_property name="ElementShortName">[27]</obj_property>
+         <obj_property name="ObjectShortName">[27]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[26]" type="logic">
+         <obj_property name="ElementShortName">[26]</obj_property>
+         <obj_property name="ObjectShortName">[26]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[25]" type="logic">
+         <obj_property name="ElementShortName">[25]</obj_property>
+         <obj_property name="ObjectShortName">[25]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[24]" type="logic">
+         <obj_property name="ElementShortName">[24]</obj_property>
+         <obj_property name="ObjectShortName">[24]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[23]" type="logic">
+         <obj_property name="ElementShortName">[23]</obj_property>
+         <obj_property name="ObjectShortName">[23]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[22]" type="logic">
+         <obj_property name="ElementShortName">[22]</obj_property>
+         <obj_property name="ObjectShortName">[22]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[21]" type="logic">
+         <obj_property name="ElementShortName">[21]</obj_property>
+         <obj_property name="ObjectShortName">[21]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[20]" type="logic">
+         <obj_property name="ElementShortName">[20]</obj_property>
+         <obj_property name="ObjectShortName">[20]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[19]" type="logic">
+         <obj_property name="ElementShortName">[19]</obj_property>
+         <obj_property name="ObjectShortName">[19]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[18]" type="logic">
+         <obj_property name="ElementShortName">[18]</obj_property>
+         <obj_property name="ObjectShortName">[18]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[17]" type="logic">
+         <obj_property name="ElementShortName">[17]</obj_property>
+         <obj_property name="ObjectShortName">[17]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[16]" type="logic">
+         <obj_property name="ElementShortName">[16]</obj_property>
+         <obj_property name="ObjectShortName">[16]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata[15]" type="logic">
+         <obj_property name="ElementShortName">[15]</obj_property>
+         <obj_property name="ObjectShortName">[15]</obj_property>
+      </wvobject>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/START_ADDR" type="array">
-      <obj_property name="ElementShortName">START_ADDR[13:0]</obj_property>
-      <obj_property name="ObjectShortName">START_ADDR[13:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fifo_ram_data" type="array">
+      <obj_property name="ElementShortName">fifo_ram_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">fifo_ram_data[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/MAX_ADDR_160K" type="array">
-      <obj_property name="ElementShortName">MAX_ADDR_160K[13:0]</obj_property>
-      <obj_property name="ObjectShortName">MAX_ADDR_160K[13:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/full" type="logic">
+      <obj_property name="ElementShortName">full</obj_property>
+      <obj_property name="ObjectShortName">full</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/MAX_ADDR_96K" type="array">
-      <obj_property name="ElementShortName">MAX_ADDR_96K[13:0]</obj_property>
-      <obj_property name="ObjectShortName">MAX_ADDR_96K[13:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/empty" type="logic">
+      <obj_property name="ElementShortName">empty</obj_property>
+      <obj_property name="ObjectShortName">empty</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/MAX_ADDR" type="array">
-      <obj_property name="ElementShortName">MAX_ADDR[13:0]</obj_property>
-      <obj_property name="ObjectShortName">MAX_ADDR[13:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_iready" type="logic">
+      <obj_property name="ElementShortName">fir_iready</obj_property>
+      <obj_property name="ObjectShortName">fir_iready</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/DUC_LENGTH" type="array">
-      <obj_property name="ElementShortName">DUC_LENGTH[13:0]</obj_property>
-      <obj_property name="ObjectShortName">DUC_LENGTH[13:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qready" type="logic">
+      <obj_property name="ElementShortName">fir_qready</obj_property>
+      <obj_property name="ObjectShortName">fir_qready</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/CMD_ADDR" type="array">
-      <obj_property name="ElementShortName">CMD_ADDR[13:0]</obj_property>
-      <obj_property name="ObjectShortName">CMD_ADDR[13:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/rd_en" type="logic">
+      <obj_property name="ElementShortName">rd_en</obj_property>
+      <obj_property name="ObjectShortName">rd_en</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/CMD_DOWN_START" type="array">
-      <obj_property name="ElementShortName">CMD_DOWN_START[31:0]</obj_property>
-      <obj_property name="ObjectShortName">CMD_DOWN_START[31:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_idin" type="array">
+      <obj_property name="ElementShortName">fir_idin[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fir_idin[15:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/CMD_DOWN_END" type="array">
-      <obj_property name="ElementShortName">CMD_DOWN_END[31:0]</obj_property>
-      <obj_property name="ObjectShortName">CMD_DOWN_END[31:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdin" type="array">
+      <obj_property name="ElementShortName">fir_qdin[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fir_qdin[15:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/CMD_DOWN_TRIG" type="array">
-      <obj_property name="ElementShortName">CMD_DOWN_TRIG[31:0]</obj_property>
-      <obj_property name="ObjectShortName">CMD_DOWN_TRIG[31:0]</obj_property>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/duc_idata_tmp" type="array">
+      <obj_property name="ElementShortName">duc_idata_tmp[31:0]</obj_property>
+      <obj_property name="ObjectShortName">duc_idata_tmp[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/duc_qdata_tmp" type="array">
+      <obj_property name="ElementShortName">duc_qdata_tmp[31:0]</obj_property>
+      <obj_property name="ObjectShortName">duc_qdata_tmp[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_ivalid" type="logic">
+      <obj_property name="ElementShortName">fir_ivalid</obj_property>
+      <obj_property name="ObjectShortName">fir_ivalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_idata_cut" type="array">
+      <obj_property name="ElementShortName">fir_idata_cut[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fir_idata_cut[15:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/fir_qdata_cut" type="array">
+      <obj_property name="ElementShortName">fir_qdata_cut[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fir_qdata_cut[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/duc_add_idata" type="array">
+      <obj_property name="ElementShortName">duc_add_idata[15:0]</obj_property>
+      <obj_property name="ObjectShortName">duc_add_idata[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/u_conv_top/u_duc_conv/duc_add_qdata" type="array">
+      <obj_property name="ElementShortName">duc_add_qdata[15:0]</obj_property>
+      <obj_property name="ObjectShortName">duc_add_qdata[15:0]</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
 </wave_config>
